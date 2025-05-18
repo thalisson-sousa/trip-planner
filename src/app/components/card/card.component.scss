@@ -1,0 +1,31 @@
+section {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 1em;
+  padding: 3rem 1rem;
+  max-width: 200px;
+  background-color: #fff;
+  font-family: 'poppins', sans-serif;
+
+  div {
+    margin: 0 auto;
+    padding: 0.4rem;
+    text-align: center;
+    color: #fff;
+    background-color: #0ea5e9;
+
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+  }
+
+  h3 {
+    font-weight: 400;
+  }
+
+  p {
+    font-size: small;
+    font-weight: 200;
+  }
+}
