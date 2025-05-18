@@ -1,0 +1,43 @@
+section {
+  display: flex;
+  flex-direction: column;
+  padding: 5rem;
+  color: #fff;
+  background-color: #0ea5e9;
+  background-image: url('../../../../assets//images/background-grid.svg');
+
+  div {
+    display: flex;
+    flex-direction: column;
+    font-family: 'Poppins', sans-serif;
+    width: 70%;
+    gap: 1rem;
+
+    h1 {
+      font-size: 3em;
+      font-weight: 600;
+    }
+
+    p {
+      font-size: 1.5em;
+      font-weight: 200;
+    }
+
+    a {
+      text-decoration: none;
+      color: #0ea5e9;
+      background-color: #fff;
+      width: fit-content;
+      padding: 1rem 2rem;
+      border-radius: 5px;
+      font-size: 1em;
+      font-weight: 500;
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        background-color: #f4f4f4;
+        transform: scale(1.05);
+      }
+    }
+  }
+}
