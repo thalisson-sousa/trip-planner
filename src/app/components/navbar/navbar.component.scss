@@ -29,6 +29,7 @@ nav ul li a {
   text-decoration: none;
   cursor: pointer;
 }
+
 nav ul li .route:hover {
   color: #4fb9ea;
 }
@@ -39,6 +40,10 @@ nav div:last-child {
   background-color: #444;
   border-radius: 50%;
   cursor: pointer;
+}
+
+.route {
+  color: black;
 }
 
 .logo {
