@@ -1,5 +1,7 @@
 section {
-  display: flex;
+  //display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
   height: 100%;
   margin: 0 1rem;
@@ -18,5 +20,13 @@ section {
     flex-wrap: wrap;
     width: 100%;
     gap: 1rem;
+  }
+
+  .how-works-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
   }
 }
