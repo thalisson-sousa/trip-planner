@@ -64,13 +64,16 @@ export class StepperComponent {
   editedAttraction: Attraction = {
   id: '',
   nome: '',
-  preco: 0
+  preco: 0 ,
+  isAttraction: true
 };
 
   editedId: string | null = null;
   editedIndex: number = -1;
 
   attractionInput = new FormControl('');
+  GastoNome = new FormControl('');
+  GastoPreco = new FormControl<number | null>(null);
 
   // Gere um id único (simples)
   private generateId(): string {
@@ -109,7 +112,7 @@ export class StepperComponent {
     const nome = this.attractionInput.value?.trim();
     const preco = 0;
     if (nome) {
-      const novaAtracao: Attraction = { id: this.generateId(), nome, preco };
+      const novaAtracao: Attraction = { id: this.generateId(), nome, preco, isAttraction: true };
       this.atracao.push(this.formBuilder.control(novaAtracao));
       this.attractionInput.reset();
     }
@@ -137,6 +140,18 @@ export class StepperComponent {
       this.atracao.clear();
     } else {
       console.log('Form is invalid');
+    }
+  }
+
+  // Método para adicionar um gasto de Passagens e Hospedagem
+  addGasto() {
+    const nome = this.GastoNome.value?.trim();
+    const preco = this.GastoPreco.value ?? 0;
+    if (nome) {
+      const novaPassagem: Attraction = { id: this.generateId(), nome, preco, isAttraction: false };
+      this.atracao.push(this.formBuilder.control(novaPassagem));
+      this.GastoNome.reset();
+      this.GastoPreco.reset();
     }
   }
 
@@ -186,29 +201,32 @@ export class StepperComponent {
     }
 
     //PopUp de confirmação para deletar um item da aba roteiro
-    deleteItem(event: Event, index: number) {
-        this.confirmationService.confirm({
-            target: event.target as EventTarget,
-            message: 'Gostaria de deletar este item?',
-            icon: 'pi pi-info-circle',
-            rejectButtonProps: {
-                label: 'Cancelar',
-                severity: 'secondary',
-                outlined: true
-            },
-            acceptButtonProps: {
-                label: 'Deletar',
-                severity: 'danger'
-            },
-            accept: () => {
-                this.removeAttraction(index);
-                this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Item deletado', life: 3000 });
-            },
-            reject: () => {
-                this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'Operação cancelada pelo Usuario!', life: 3000 });
-            }
-        });
-    }
+    deleteItem(event: Event, id: string) {
+    const index = this.atracao.controls.findIndex(ctrl => ctrl.value?.id === id);
+    if (index === -1) return; // Não encontrou o item
+
+    this.confirmationService.confirm({
+        target: event.target as EventTarget,
+        message: 'Gostaria de deletar este item?',
+        icon: 'pi pi-info-circle',
+        rejectButtonProps: {
+            label: 'Cancelar',
+            severity: 'secondary',
+            outlined: true
+        },
+        acceptButtonProps: {
+            label: 'Deletar',
+            severity: 'danger'
+        },
+        accept: () => {
+            this.removeAttraction(index);
+            this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Item deletado', life: 3000 });
+        },
+        reject: () => {
+            this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'Operação cancelada pelo Usuario!', life: 3000 });
+        }
+    });
+}
 
     UpdateCustos(event: Event) {
         this.confirmationService.confirm({

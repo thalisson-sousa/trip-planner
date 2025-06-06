@@ -1,17 +1,10 @@
-{
-    "extends": "../tsconfig.json",
-    "compilerOptions": {
-      "outDir": "../out-tsc/spec",
-      "types": [
-        "jasmine",
-        "node"
-      ]
-    },
-    "files": [
-      "test.ts"
-    ],
-    "include": [
-      "**/*.spec.ts",
-      "**/*.d.ts"
-    ]
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./src/**/*.{html,ts}"
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
 }

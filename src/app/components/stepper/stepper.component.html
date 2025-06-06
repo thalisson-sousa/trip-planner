@@ -83,7 +83,6 @@
                     </div>
                     }
                   </main>
-
                   <!-- Step Gerais temina aqui!  -->
                 </div>
                 <div class="flex pt-6 justify-end">
@@ -167,10 +166,11 @@
                       <div class="card flex justify-center">
                         <p-virtualscroller [items]="atracoesList" [itemSize]="50" scrollHeight="300px" [style]="{ width: '500px', height: '300px' }">
                           <ng-template let-atracao pTemplate="item">
+                            @if (atracao.isAttraction) {
                               <aside class="flex items-center p-2" style="height: 50px;">
                                 <span class="grow-6"> <i class="pi pi-map" style="color: #0ea5e9"></i> {{ atracao.nome }}</span>
-                                <span class="grow-2 text-end">R$ {{ atracao.preco }}</span>
                                 <button
+                                  id="delete-button"
                                   class="ml-auto p-button p-component p-button-text"
                                   (click)="deleteItem($event, atracao.id)"
                                   pButton
@@ -179,6 +179,7 @@
                                   aria-label="Remove"
                                 ></button>
                               </aside>
+                            }
                           </ng-template>
                         </p-virtualscroller>
                       </div>
@@ -220,7 +221,7 @@
                 >
                   <main>
                     <div class="card flex justify-center">
-                        <p-accordion value="0">
+                        <p-accordion [value]="['0', '2']" [multiple]="true">
                               <p-accordion-panel value="0">
                                   <p-accordion-header>Passagens</p-accordion-header>
                                   <p-accordion-content class="flex flex-col gap-2">
@@ -231,23 +232,32 @@
                                                 <i class="pi pi-briefcase"></i>
                                             </p-inputgroup-addon>
                                             <p-iftalabel [style]="{ width: '200px' }">
-                                                <input pInputText inputId="company" />
+                                                <input pInputText inputId="company" [formControl]="GastoNome" />
                                                 <label for="company">Nome</label>
                                             </p-iftalabel>
                                         </p-inputgroup>
                                     </menuitem>
-                                    <menuitem class="flex justify-between items-center w-full">
+                                    <menuitem id="menu-item" class="flex justify-between items-center w-full">
                                       <label for="price" class="font-bold block mb-2" [style]="{ width: '100%' }">Valor da Passagem:</label>
                                         <p-inputgroup class="md:!w-80">
                                             <p-inputgroup-addon>
                                                 <i class="pi pi-dollar"></i>
                                             </p-inputgroup-addon>
                                             <p-iftalabel [style]="{ width: '200px' }">
-                                                <p-inputnumber inputId="price" mode="currency" currency="BRL" locale="pt-BR" />
+                                                <p-inputnumber inputId="price" mode="currency" currency="BRL" locale="pt-BR" [formControl]="GastoPreco" />
                                                 <label for="price">Valor</label>
                                             </p-iftalabel>
                                         </p-inputgroup>
                                     </menuitem>
+                                    <aside class="flex justify-end w-full">
+                                      <p-button
+                                        id="save-button"
+                                        label="Next"
+                                        icon="pi pi-save"
+                                        iconPos="right"
+                                        (click)="addGasto()"
+                                      />
+                                    </aside>
                                   </p-accordion-content>
                               </p-accordion-panel>
 
@@ -261,28 +271,37 @@
                                                 <i class="pi pi-home"></i>
                                             </p-inputgroup-addon>
                                             <p-iftalabel [style]="{ width: '200px' }">
-                                                <input pInputText inputId="host" />
+                                                <input pInputText inputId="host" [formControl]="GastoNome" />
                                                 <label for="host">Nome</label>
                                             </p-iftalabel>
                                         </p-inputgroup>
                                     </menuitem>
-                                    <menuitem class="flex justify-between items-center w-full">
+                                    <menuitem id="menu-item" class="flex justify-between items-center w-full">
                                       <label for="price" class="font-bold block mb-2" [style]="{ width: '100%' }">Valor da Hospedagem:</label>
                                         <p-inputgroup class="md:!w-80">
                                             <p-inputgroup-addon>
                                                 <i class="pi pi-dollar"></i>
                                             </p-inputgroup-addon>
                                             <p-iftalabel [style]="{ width: '200px' }">
-                                                <p-inputnumber inputId="price" mode="currency" currency="BRL" locale="pt-BR" />
+                                                <p-inputnumber inputId="price" mode="currency" currency="BRL" locale="pt-BR" [formControl]="GastoPreco" />
                                                 <label for="price">Valor</label>
                                             </p-iftalabel>
                                         </p-inputgroup>
                                     </menuitem>
+                                    <aside class="flex justify-end w-full">
+                                      <p-button
+                                        id="save-button"
+                                        label="Next"
+                                        icon="pi pi-save"
+                                        iconPos="right"
+                                        (click)="addGasto()"
+                                      />
+                                    </aside>
                                   </p-accordion-content>
                               </p-accordion-panel>
 
                               <p-accordion-panel value="2">
-                                  <p-accordion-header>Atrações</p-accordion-header>
+                                  <p-accordion-header>Atrações / Gastos</p-accordion-header>
                                   <p-accordion-content>
                                     <p-virtualscroller [items]="atracoesList" [itemSize]="50" scrollHeight="300px" [style]="{ width: '500px', height: '300px' }">
                                       <ng-template let-atracao pTemplate="item">
@@ -297,6 +316,17 @@
                                               styleClass="p-button-text p-button-rounded"
                                               aria-label="Remove"
                                             ></button>
+                                            @if(atracao.isAttraction) {
+                                              <button
+                                                id="delete-button"
+                                                class="ml-auto p-button p-component p-button-text"
+                                                (click)="deleteItem($event, atracao.id)"
+                                                pButton
+                                                icon="pi pi-trash"
+                                                styleClass="p-button-text p-button-rounded"
+                                                aria-label="Remove"
+                                              ></button>
+                                            }
                                           </aside>
                                       </ng-template>
                                     </p-virtualscroller>
