@@ -8,124 +8,344 @@
         <p-step [value]="4">Custos</p-step>
         <p-step [value]="5">Resumo</p-step>
       </p-step-list>
-      <p-step-panels>
-        <p-step-panel [value]="1">
-          <ng-template #content let-activateCallback="activateCallback">
-            <div class="flex flex-col h-48">
-              <div
-                class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
-              >
-                Gerais
+      <p-step-panels class="painel">
+        <form [formGroup]="travelForm" class="flex flex-col gap-4">
+          <p-step-panel [value]="1">
+            <ng-template #content let-activateCallback="activateCallback">
+              <div class="flex flex-col h-48">
+                <div
+                  class="border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 font-medium"
+                >
+                  <!-- Step Gerais começa aqui!  -->
+                  <main>
+                    <div class="header">
+                      <h2>Informações Gerais</h2>
+
+                      <p-floatlabel class="w-full">
+                        <input
+                          pInputText
+                          id="over_label"
+                          formControlName="nome"
+                          autocomplete="off"
+                          class="w-full"
+                        />
+                        <label for="over_label">Nome da Vigem</label>
+                      </p-floatlabel>
+                    </div>
+
+                    <div class="datas">
+                      <div>
+                        <label for="start" class="font-bold block mb-2">
+                          Data de Início
+                        </label>
+                        <p-datepicker
+                          formControlName="dataInicio"
+                          dateFormat="dd/mm/yy"
+                          [iconDisplay]="'input'"
+                          [showIcon]="true"
+                          placeholder="dd/mm/aaaa"
+                          inputId="start"
+                        />
+                      </div>
+                      <div>
+                        <label for="finish" class="font-bold block mb-2">
+                          Data de Fim
+                        </label>
+                        <p-datepicker
+                          formControlName="dataFim"
+                          dateFormat="dd/mm/yy"
+                          [iconDisplay]="'input'"
+                          [showIcon]="true"
+                          placeholder="dd/mm/aaaa"
+                          inputId="finish"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="input-url">
+                      <p-inputgroup>
+                        <p-inputgroup-addon>URL</p-inputgroup-addon>
+                        <input
+                          pInputText
+                          formControlName="url"
+                          placeholder="Link da imagem de capa"
+                        />
+                      </p-inputgroup>
+                    </div>
+                    @if (travelForm.get('url')?.value) {
+                    <div class="card flex justify-center p-2">
+                      <p-image
+                        src="{{ travelForm.get('url')?.value }}"
+                        alt="Image"
+                        width="250"
+                        [preview]="true"
+                      />
+                    </div>
+                    }
+                  </main>
+
+                  <!-- Step Gerais temina aqui!  -->
+                </div>
+                <div class="flex pt-6 justify-end">
+                  <p-button
+                    label="Next"
+                    icon="pi pi-arrow-right"
+                    iconPos="right"
+                    (onClick)="activateCallback(2)"
+                  />
+                </div>
               </div>
-              <div class="flex pt-6 justify-end">
+            </ng-template>
+          </p-step-panel>
+
+          <!-- Step Destinos começa aqui!  -->
+          <p-step-panel [value]="2">
+            <ng-template #content let-activateCallback="activateCallback">
+              <div class="flex flex-col h-48">
+                <div
+                  class="border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 font-medium"
+                >
+                  <main>
+                    <div class="header">
+                      <p-floatlabel class="w-full">
+                        <input
+                          pInputText
+                          id="over_label"
+                          formControlName="destino"
+                          autocomplete="off"
+                          class="w-full"
+                        />
+                        <label for="over_label">Informe o Destino</label>
+                      </p-floatlabel>
+                    </div>
+                  </main>
+                </div>
+              </div>
+              <div class="flex pt-6 justify-between">
+                <p-button
+                  label="Back"
+                  severity="secondary"
+                  icon="pi pi-arrow-left"
+                  (onClick)="activateCallback(1)"
+                />
                 <p-button
                   label="Next"
                   icon="pi pi-arrow-right"
                   iconPos="right"
-                  (onClick)="activateCallback(2)"
+                  (onClick)="activateCallback(3)"
                 />
               </div>
-            </div>
-          </ng-template>
-        </p-step-panel>
+            </ng-template>
+          </p-step-panel>
+          <!-- Step Destinos temina aqui!  -->
 
-        <p-step-panel [value]="2">
-          <ng-template #content let-activateCallback="activateCallback">
-            <div class="flex flex-col h-48">
-              <div
-                class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
-              >
-                Destinos
-              </div>
-            </div>
-            <div class="flex pt-6 justify-between">
-              <p-button
-                label="Back"
-                severity="secondary"
-                icon="pi pi-arrow-left"
-                (onClick)="activateCallback(1)"
-              />
-              <p-button
-                label="Next"
-                icon="pi pi-arrow-right"
-                iconPos="right"
-                (onClick)="activateCallback(3)"
-              />
-            </div>
-          </ng-template>
-        </p-step-panel>
+          <!-- Step Roteiro começa aqui!  -->
+          <p-step-panel [value]="3">
+            <ng-template #content let-activateCallback="activateCallback">
+              <div class="flex flex-col h-48">
+                <div
+                  class="border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 font-medium"
+                >
+                  <main>
+                    <div class="header">
+                      <div class="flex justify-center items-center">
+                        <p-floatlabel class="w-full">
+                          <input
+                            pInputText
+                            [formControl]="attractionInput"
+                            autocomplete="off"
+                            class="w-full"
+                          />
+                          <label for="over_label">Informe a atração</label>
+                        </p-floatlabel>
+                        <p-button
+                          label="Adicionar"
+                          (onClick)="addAttraction()"
+                        />
+                      </div>
 
-        <p-step-panel [value]="3">
-          <ng-template #content let-activateCallback="activateCallback">
-            <div class="flex flex-col h-48">
-              <div
-                class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
-              >
-                Roteiro
-              </div>
-            </div>
-            <div class="flex pt-6 justify-between">
-              <p-button
-                label="Back"
-                severity="secondary"
-                icon="pi pi-arrow-left"
-                (onClick)="activateCallback(2)"
-              />
-              <p-button
-                label="Next"
-                icon="pi pi-arrow-right"
-                iconPos="right"
-                (onClick)="activateCallback(4)"
-              />
-            </div>
-          </ng-template>
-        </p-step-panel>
+                      <div class="card flex justify-center">
+                        <p-virtualscroller [items]="atracoesList" [itemSize]="50" scrollHeight="300px" [style]="{ width: '500px', height: '300px' }">
+                          <ng-template let-atracao pTemplate="item">
+                              <aside class="flex items-center p-2" style="height: 50px;">
+                                <span class="grow-6"> <i class="pi pi-map" style="color: #0ea5e9"></i> {{ atracao.nome }}</span>
+                                <span class="grow-2 text-end">R$ {{ atracao.preco }}</span>
+                                <button
+                                  class="ml-auto p-button p-component p-button-text"
+                                  (click)="deleteItem($event, atracao.id)"
+                                  pButton
+                                  icon="pi pi-trash"
+                                  styleClass="p-button-text p-button-rounded"
+                                  aria-label="Remove"
+                                ></button>
+                              </aside>
+                          </ng-template>
+                        </p-virtualscroller>
+                      </div>
 
-        <p-step-panel [value]="4">
-          <ng-template #content let-activateCallback="activateCallback">
-            <div class="flex flex-col h-48">
-              <div
-                class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
-              >
-                Custos
-              </div>
-            </div>
-            <div class="flex pt-6 justify-between">
-              <p-button
-                label="Back"
-                severity="secondary"
-                icon="pi pi-arrow-left"
-                (onClick)="activateCallback(3)"
-              />
-              <p-button
-                label="Next"
-                icon="pi pi-arrow-right"
-                iconPos="right"
-                (onClick)="activateCallback(5)"
-              />
-            </div>
-          </ng-template>
-        </p-step-panel>
+                      <!-- PopUp de confirmação aba roteiro -->
+                      <div class="card flex justify-center gap-2">
+                          <p-toast />
+                          <p-confirmpopup />
+                      </div>
 
-        <p-step-panel [value]="5">
-          <ng-template #content let-activateCallback="activateCallback">
-            <div class="flex flex-col h-48">
-              <div
-                class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
-              >
-                Resumo
+                    </div>
+                  </main>
+                </div>
               </div>
-            </div>
-            <div class="flex pt-6 justify-start">
-              <p-button
-                label="Back"
-                icon="pi pi-arrow-left"
-                iconPos="right"
-                (onClick)="activateCallback(4)"
-              />
-            </div>
-          </ng-template>
-        </p-step-panel>
+              <div class="flex pt-6 justify-between">
+                <p-button
+                  label="Back"
+                  severity="secondary"
+                  icon="pi pi-arrow-left"
+                  (onClick)="activateCallback(2)"
+                />
+                <p-button
+                  label="Next"
+                  icon="pi pi-arrow-right"
+                  iconPos="right"
+                  (onClick)="activateCallback(4)"
+                />
+              </div>
+            </ng-template>
+          </p-step-panel>
+          <!-- Step Roteiro termina aqui!  -->
+
+          <!-- Step Custos começa aqui!  -->
+          <p-step-panel [value]="4">
+            <ng-template #content let-activateCallback="activateCallback">
+              <div class="flex flex-col h-48">
+                <div
+                  class="border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 font-medium"
+                >
+                  <main>
+                    <div class="card flex justify-center">
+                        <p-accordion value="0">
+                              <p-accordion-panel value="0">
+                                  <p-accordion-header>Passagens</p-accordion-header>
+                                  <p-accordion-content>
+                                    <div class="flex justify-between items-center w-full">
+                                      <label for="price" class="font-bold block mb-2" [style]="{ width: '100%' }">Valor da Passagem:</label>
+                                        <p-inputgroup class="md:!w-80">
+                                            <p-inputgroup-addon>
+                                                <i class="pi pi-shopping-cart"></i>
+                                            </p-inputgroup-addon>
+                                            <p-iftalabel [style]="{ width: '200px' }">
+                                                <p-inputnumber inputId="price" mode="currency" currency="BRL" locale="pt-BR" />
+                                                <label for="price">Price</label>
+                                            </p-iftalabel>
+                                        </p-inputgroup>
+                                    </div>
+                                  </p-accordion-content>
+                              </p-accordion-panel>
+
+                              <p-accordion-panel value="1">
+                                  <p-accordion-header>Hospedagem</p-accordion-header>
+                                  <p-accordion-content>
+                                    <div class="flex justify-between items-center w-full">
+                                      <label for="price" class="font-bold block mb-2" [style]="{ width: '100%' }">Valor da Hospedagem:</label>
+                                        <p-inputgroup class="md:!w-80">
+                                            <p-inputgroup-addon>
+                                                <i class="pi pi-shopping-cart"></i>
+                                            </p-inputgroup-addon>
+                                            <p-iftalabel [style]="{ width: '200px' }">
+                                                <p-inputnumber inputId="price" mode="currency" currency="BRL" locale="pt-BR" />
+                                                <label for="price">Price</label>
+                                            </p-iftalabel>
+                                        </p-inputgroup>
+                                    </div>
+                                  </p-accordion-content>
+                              </p-accordion-panel>
+
+                              <p-accordion-panel value="2">
+                                  <p-accordion-header>Atrações</p-accordion-header>
+                                  <p-accordion-content>
+                                    <p-virtualscroller [items]="atracoesList" [itemSize]="50" scrollHeight="300px" [style]="{ width: '500px', height: '300px' }">
+                                      <ng-template let-atracao pTemplate="item">
+                                          <aside class="flex items-center p-2" style="height: 50px;">
+                                            <span class="grow-6"> <i class="pi pi-map" style="color: #0ea5e9"></i> {{ atracao.nome }}</span>
+                                            <span class="grow-2 text-end">R$ {{ atracao.preco }}</span>
+                                            <button
+                                              class="ml-auto p-button p-component p-button-text"
+                                              (click)="editAttraction(atracao.nome, atracao.preco)"
+                                              pButton
+                                              icon="pi pi-pen-to-square"
+                                              styleClass="p-button-text p-button-rounded"
+                                              aria-label="Remove"
+                                            ></button>
+                                          </aside>
+                                      </ng-template>
+                                    </p-virtualscroller>
+                                  </p-accordion-content>
+                              </p-accordion-panel>
+                          </p-accordion>
+                      </div>
+                  </main>
+                </div>
+              </div>
+              <div class="flex pt-6 justify-between">
+                <p-button
+                  label="Back"
+                  severity="secondary"
+                  icon="pi pi-arrow-left"
+                  (onClick)="activateCallback(3)"
+                />
+                <p-button
+                  label="Next"
+                  icon="pi pi-arrow-right"
+                  iconPos="right"
+                  (onClick)="activateCallback(5)"
+                />
+              </div>
+            </ng-template>
+          </p-step-panel>
+          <!-- Step Custos termina aqui!  -->
+
+          <!-- Step Resumo começa aqui!  -->
+          <p-step-panel [value]="5">
+            <ng-template #content let-activateCallback="activateCallback">
+              <div class="flex flex-col h-48">
+                <div
+                  class="border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 font-medium"
+                >
+                  Resumo
+                  <button (click)="addTravel()"></button>
+                </div>
+              </div>
+              <div class="flex pt-6 justify-start">
+                <p-button
+                  label="Back"
+                  icon="pi pi-arrow-left"
+                  iconPos="right"
+                  (onClick)="activateCallback(4)"
+                />
+              </div>
+            </ng-template>
+          </p-step-panel>
+          <!-- Step Resumo termina aqui!  -->
+
+          <!-- Modal começaa aqui!  -->
+           <section class="card flex justify-center">
+              <p-dialog class="modal" header="Edite a Atração" [modal]="true" [(visible)]="visible" [style]="{ display: 'flex', gap: '1rem', width: '25rem' }">
+                  <aside class="flex items-center justify-between">
+                      <label for="username" >Atração</label>
+                      <input pInputText id="username" autocomplete="off" />
+                  </aside>
+                  <aside class="flex items-center justify-between">
+                      <label for="email">Preço</label>
+                      <input pInputText id="email" autocomplete="off" />
+                  </aside>
+                  <aside class="flex justify-end gap-2">
+                      <p-button label="Atualizar" (click)="UpdateCustos($event)" />
+                  </aside>
+                </p-dialog>
+                <div class="card flex justify-center gap-2">
+                  <p-toast />
+                  <p-confirmpopup />
+                </div>
+          </section>
+          <!-- Modal termina aqui!  -->
+        </form>
       </p-step-panels>
     </p-stepper>
   </div>
