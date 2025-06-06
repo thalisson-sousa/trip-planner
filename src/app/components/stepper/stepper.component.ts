@@ -27,6 +27,7 @@ import { Dialog } from 'primeng/dialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { Attraction } from '../../types/Attraction';
 
 @Component({
   selector: 'app-stepper',
@@ -60,10 +61,21 @@ export class StepperComponent {
 
   private formBuilder = inject(FormBuilder);
   visible: boolean = false;
-  editedAttraction: { nome: string; preco: number } | null = null;
+  editedAttraction: Attraction = {
+  id: '',
+  nome: '',
+  preco: 0
+};
+
+  editedId: string | null = null;
   editedIndex: number = -1;
 
   attractionInput = new FormControl('');
+
+  // Gere um id único (simples)
+  private generateId(): string {
+    return Math.random().toString(36).substring(2, 10) + Date.now();
+  }
 
   travelForm = new FormGroup({
     nome: new FormControl<string | null>(null),
@@ -71,34 +83,33 @@ export class StepperComponent {
     dataInicio: new FormControl<Date | null>(null),
     dataFim: new FormControl<Date | null>(null),
     destino: new FormControl<string | null>(null),
-    gastos: this.formBuilder.array<FormControl<{ nome: string; preco: number } | null>>([]),
+    gastos: this.formBuilder.array<FormControl<Attraction | null>>([]),
   });
+
+  editForm = this.formBuilder.group({
+  nome: new FormControl<string | null>(null),
+  preco: new FormControl<number | null>(null),
+});
+
 
   constructor(private confirmationService: ConfirmationService, private messageService: MessageService) {}
 
-  get atracao(): FormArray<
-    FormControl<{ nome: string; preco: number } | null>
-  > {
-    return this.travelForm.get('gastos') as FormArray<
-      FormControl<{ nome: string; preco: number } | null>
-    >;
+    get atracao(): FormArray<FormControl<Attraction | null>> {
+    return this.travelForm.get('gastos') as FormArray<FormControl<Attraction | null>>;
   }
 
   // Getter que transforma os valores do FormArray em uma lista utilizável no OrderList
-  get atracoesList(): { nome: string; preco: number }[] {
+  get atracoesList(): Attraction[] {
     return this.atracao.controls
       .map((control) => control.value)
-      .filter(
-        (value): value is { nome: string; preco: number } => value !== null
-      );
+      .filter((value): value is Attraction => value !== null);
   }
 
   addAttraction() {
     const nome = this.attractionInput.value?.trim();
     const preco = 0;
-
     if (nome) {
-      const novaAtracao = { nome, preco };
+      const novaAtracao: Attraction = { id: this.generateId(), nome, preco };
       this.atracao.push(this.formBuilder.control(novaAtracao));
       this.attractionInput.reset();
     }
@@ -111,13 +122,11 @@ export class StepperComponent {
   // Atualiza o FormArray conforme a nova ordem no OrderList
   syncFormArray() {
     const novosControles = this.atracoesList.map((item) =>
-      this.formBuilder.control(item)
+      this.formBuilder.control(item as Attraction)
     );
     this.travelForm.setControl(
       'gastos',
-      this.formBuilder.array<
-        FormControl<{ nome: string; preco: number } | null>
-      >(novosControles)
+      this.formBuilder.array<FormControl<Attraction | null>>(novosControles)
     );
   }
 
@@ -131,28 +140,44 @@ export class StepperComponent {
     }
   }
 
-    // Método para editar uma atração existente
-    editAttraction(attraction: { nome: string; preco: number }, index: number) {
-        this.editedAttraction = { ...attraction };
-        this.editedIndex = index;
-        this.showDialog();
-        console.log(index)
-    }
+  // Método para editar uma atração existente
+  editAttraction(id: string) {
+  const attraction = this.getAttractionData(id);
+  if (attraction) {
+    this.editedAttraction = { ...attraction };
+    this.editedId = id;
+
+    this.editForm.patchValue({
+      nome: attraction.nome,
+      preco: attraction.preco,
+    });
+
+    this.showDialog();
+  }
+}
+
 
     // Método para salvar as alterações de uma atração
     saveAttraction() {
-        if (this.editedAttraction && this.editedIndex >= 0) {
-            this.atracao.at(this.editedIndex).setValue(this.editedAttraction);
-            this.editedAttraction = null;
-            this.editedIndex = -1;
-            this.visible = false;
-        }
-    }
+      if (this.editedId && this.editForm.valid) {
+        const index = this.atracao.controls.findIndex(
+          (ctrl) => ctrl.value?.id === this.editedId
+        );
+      if (index !== -1) {
+        const updated = {
+          ...this.atracao.at(index).value,
+          ...this.editForm.value,
+        } as Attraction;
+        this.atracao.at(index).setValue(updated);
+      }
+      this.visible = false;
+  }
+}
 
-    getAttractionData(index: number): { nome: string; preco: number } {
-      const attraction = this.atracao.at(index).value;
-      return attraction ? { nome: attraction.nome, preco: attraction.preco } : { nome: '', preco: 0 };
-    }
+
+    getAttractionData(id: string): Attraction | null {
+    return this.atracoesList.find((a) => a.id === id) || null;
+  }
 
     // Método para exibir o diálogo de edição
 

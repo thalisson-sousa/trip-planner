@@ -223,37 +223,61 @@
                         <p-accordion value="0">
                               <p-accordion-panel value="0">
                                   <p-accordion-header>Passagens</p-accordion-header>
-                                  <p-accordion-content>
-                                    <div class="flex justify-between items-center w-full">
+                                  <p-accordion-content class="flex flex-col gap-2">
+                                    <menuitem class="flex justify-between items-center w-full">
+                                      <label for="company" class="font-bold block mb-2" [style]="{ width: '100%' }">Companhia Aerea:</label>
+                                        <p-inputgroup class="md:!w-80">
+                                            <p-inputgroup-addon>
+                                                <i class="pi pi-briefcase"></i>
+                                            </p-inputgroup-addon>
+                                            <p-iftalabel [style]="{ width: '200px' }">
+                                                <input pInputText inputId="company" />
+                                                <label for="company">Nome</label>
+                                            </p-iftalabel>
+                                        </p-inputgroup>
+                                    </menuitem>
+                                    <menuitem class="flex justify-between items-center w-full">
                                       <label for="price" class="font-bold block mb-2" [style]="{ width: '100%' }">Valor da Passagem:</label>
                                         <p-inputgroup class="md:!w-80">
                                             <p-inputgroup-addon>
-                                                <i class="pi pi-shopping-cart"></i>
+                                                <i class="pi pi-dollar"></i>
                                             </p-inputgroup-addon>
                                             <p-iftalabel [style]="{ width: '200px' }">
                                                 <p-inputnumber inputId="price" mode="currency" currency="BRL" locale="pt-BR" />
-                                                <label for="price">Price</label>
+                                                <label for="price">Valor</label>
                                             </p-iftalabel>
                                         </p-inputgroup>
-                                    </div>
+                                    </menuitem>
                                   </p-accordion-content>
                               </p-accordion-panel>
 
                               <p-accordion-panel value="1">
                                   <p-accordion-header>Hospedagem</p-accordion-header>
                                   <p-accordion-content>
-                                    <div class="flex justify-between items-center w-full">
+                                    <menuitem class="flex justify-between items-center w-full">
+                                      <label for="host" class="font-bold block mb-2" [style]="{ width: '100%' }">Local da Hospedagem:</label>
+                                        <p-inputgroup class="md:!w-80">
+                                            <p-inputgroup-addon>
+                                                <i class="pi pi-home"></i>
+                                            </p-inputgroup-addon>
+                                            <p-iftalabel [style]="{ width: '200px' }">
+                                                <input pInputText inputId="host" />
+                                                <label for="host">Nome</label>
+                                            </p-iftalabel>
+                                        </p-inputgroup>
+                                    </menuitem>
+                                    <menuitem class="flex justify-between items-center w-full">
                                       <label for="price" class="font-bold block mb-2" [style]="{ width: '100%' }">Valor da Hospedagem:</label>
                                         <p-inputgroup class="md:!w-80">
                                             <p-inputgroup-addon>
-                                                <i class="pi pi-shopping-cart"></i>
+                                                <i class="pi pi-dollar"></i>
                                             </p-inputgroup-addon>
                                             <p-iftalabel [style]="{ width: '200px' }">
                                                 <p-inputnumber inputId="price" mode="currency" currency="BRL" locale="pt-BR" />
-                                                <label for="price">Price</label>
+                                                <label for="price">Valor</label>
                                             </p-iftalabel>
                                         </p-inputgroup>
-                                    </div>
+                                    </menuitem>
                                   </p-accordion-content>
                               </p-accordion-panel>
 
@@ -267,7 +291,7 @@
                                             <span class="grow-2 text-end">R$ {{ atracao.preco }}</span>
                                             <button
                                               class="ml-auto p-button p-component p-button-text"
-                                              (click)="editAttraction(atracao.nome, atracao.preco)"
+                                              (click)="editAttraction(atracao.id)"
                                               pButton
                                               icon="pi pi-pen-to-square"
                                               styleClass="p-button-text p-button-rounded"
@@ -325,20 +349,20 @@
           <!-- Step Resumo termina aqui!  -->
 
           <!-- Modal começaa aqui!  -->
-           <section class="card flex justify-center">
+           <section [formGroup]="editForm" class="card flex justify-center">
               <p-dialog class="modal" header="Edite a Atração" [modal]="true" [(visible)]="visible" [style]="{ display: 'flex', gap: '1rem', width: '25rem' }">
-                  <aside class="flex items-center justify-between">
-                      <label for="username" >Atração</label>
-                      <input pInputText id="username" autocomplete="off" />
-                  </aside>
-                  <aside class="flex items-center justify-between">
-                      <label for="email">Preço</label>
-                      <input pInputText id="email" autocomplete="off" />
-                  </aside>
-                  <aside class="flex justify-end gap-2">
-                      <p-button label="Atualizar" (click)="UpdateCustos($event)" />
-                  </aside>
-                </p-dialog>
+                <aside class="flex items-center justify-between">
+                  <label for="edit-nome">Atração</label>
+                  <input pInputText id="edit-nome" formControlName="nome" autocomplete="off" />
+                </aside>
+                <aside class="flex items-center justify-between">
+                  <label for="edit-preco">Preço</label>
+                  <input pInputText id="edit-preco" type="number" formControlName="preco" autocomplete="off" />
+                </aside>
+                <aside class="flex justify-end gap-2">
+                  <p-button label="Atualizar" (click)="saveAttraction()" />
+                </aside>
+              </p-dialog>
                 <div class="card flex justify-center gap-2">
                   <p-toast />
                   <p-confirmpopup />
