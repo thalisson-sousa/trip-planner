@@ -29,7 +29,6 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { Attraction } from '../../types/Attraction';
 import { CommonModule } from '@angular/common';
-import { ResumeStepComponent } from "../resume-step/resume-step.component";
 
 @Component({
   selector: 'app-stepper',
@@ -55,7 +54,6 @@ import { ResumeStepComponent } from "../resume-step/resume-step.component";
     ToastModule,
     ConfirmPopupModule,
     CommonModule,
-    ResumeStepComponent
 ],
   templateUrl: './stepper.component.html',
   styleUrl: './stepper.component.scss',
@@ -85,11 +83,10 @@ export class StepperComponent {
   }
 
   travelForm = new FormGroup({
-    nome: new FormControl<string | null>(null),
+    destino: new FormControl<string | null>(null),
     url: new FormControl<string | null>(null),
     dataInicio: new FormControl<Date | null>(null),
     dataFim: new FormControl<Date | null>(null),
-    destino: new FormControl<string | null>(null),
     gastos: this.formBuilder.array<FormControl<Attraction | null>>([]),
     totalGastos: new FormControl<number | null>(null),
   });
