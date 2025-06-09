@@ -28,6 +28,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { Attraction } from '../../types/Attraction';
+import { CommonModule } from '@angular/common';
+import { ResumeStepComponent } from "../resume-step/resume-step.component";
 
 @Component({
   selector: 'app-stepper',
@@ -47,12 +49,14 @@ import { Attraction } from '../../types/Attraction';
     OrderListModule,
     ScrollerModule,
     AccordionModule,
-    IftaLabelModule ,
+    IftaLabelModule,
     InputNumberModule,
     Dialog,
     ToastModule,
     ConfirmPopupModule,
-  ],
+    CommonModule,
+    ResumeStepComponent
+],
   templateUrl: './stepper.component.html',
   styleUrl: './stepper.component.scss',
   providers: [ConfirmationService, MessageService]
@@ -87,6 +91,7 @@ export class StepperComponent {
     dataFim: new FormControl<Date | null>(null),
     destino: new FormControl<string | null>(null),
     gastos: this.formBuilder.array<FormControl<Attraction | null>>([]),
+    totalGastos: new FormControl<number | null>(null),
   });
 
   editForm = this.formBuilder.group({
@@ -115,11 +120,23 @@ export class StepperComponent {
       const novaAtracao: Attraction = { id: this.generateId(), nome, preco, isAttraction: true };
       this.atracao.push(this.formBuilder.control(novaAtracao));
       this.attractionInput.reset();
+      this.updateTotalGastos(); // Atualiza total
     }
+  }
+
+  calcAllCoasts(): number {
+    return this.atracoesList.reduce((total, attraction) => total + (attraction.preco || 0), 0);
+  }
+
+  // Função para atualizar o campo totalGastos do formulário
+  updateTotalGastos() {
+    const total = this.calcAllCoasts();
+    this.travelForm.get('totalGastos')?.setValue(total);
   }
 
   removeAttraction(index: number): void {
     this.atracao.removeAt(index);
+    this.updateTotalGastos(); // Atualiza total
   }
 
   // Atualiza o FormArray conforme a nova ordem no OrderList
@@ -152,6 +169,7 @@ export class StepperComponent {
       this.atracao.push(this.formBuilder.control(novaPassagem));
       this.GastoNome.reset();
       this.GastoPreco.reset();
+      this.updateTotalGastos(); // Atualiza total
     }
   }
 
@@ -184,6 +202,7 @@ export class StepperComponent {
           ...this.editForm.value,
         } as Attraction;
         this.atracao.at(index).setValue(updated);
+        this.updateTotalGastos(); // Atualiza total
       }
       this.visible = false;
   }

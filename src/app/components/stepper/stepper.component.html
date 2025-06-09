@@ -252,7 +252,7 @@
                                     <aside class="flex justify-end w-full">
                                       <p-button
                                         id="save-button"
-                                        label="Next"
+                                        label="Salvar"
                                         icon="pi pi-save"
                                         iconPos="right"
                                         (click)="addGasto()"
@@ -291,7 +291,7 @@
                                     <aside class="flex justify-end w-full">
                                       <p-button
                                         id="save-button"
-                                        label="Next"
+                                        label="Salvar"
                                         icon="pi pi-save"
                                         iconPos="right"
                                         (click)="addGasto()"
@@ -362,8 +362,49 @@
                 <div
                   class="border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 font-medium"
                 >
-                  Resumo
-                  <button (click)="addTravel()"></button>
+                  <main>
+                    <div class="header">
+                      <h2>Resumo da Viagem</h2>
+                      <p>Nome: {{ travelForm.get('nome')?.value }}</p>
+                      <p>Data de Início: {{ travelForm.get('dataInicio')?.value ? (travelForm.get('dataInicio')?.value | date:'dd/MM/yyyy') : '-' }}</p>
+                      <p>Data de Fim: {{ travelForm.get('dataFim')?.value ? (travelForm.get('dataFim')?.value | date:'dd/MM/yyyy') : '-'  }}</p>
+                      <p>Destino: {{ travelForm.get('destino')?.value }}</p>
+                      <div class="card flex justify-center p-2">
+                        @if (travelForm.get('url')?.value) {
+                          <p-image
+                            src="{{ travelForm.get('url')?.value }}"
+                            alt="Image"
+                            width="250"
+                            [preview]="true"
+                          />
+                        }
+                      </div>
+                      <p>Lista de Gastos:</p>
+                      <p-virtualscroller [items]="atracoesList" [itemSize]="50" scrollHeight="300px" [style]="{ width: '500px', height: '300px' }">
+                        <ng-template let-gasto pTemplate="item">
+                          <aside class="flex items-center p-2" style="height: 50px;">
+                            <span class="grow-6"> <i class="pi pi-dollar" style="color: #0ea5e9"></i> {{ gasto.nome }}</span>
+                            <span class="grow-2 text-end">R$ {{ gasto.preco }}</span>
+                          </aside>
+                        </ng-template>
+                      </p-virtualscroller>
+                      <p>Valor Total: R$ {{ travelForm.get('totalGastos')?.value }}</p>
+                    </div>
+                    <p>Você pode salvar a viagem para visualizá-la mais tarde.</p>
+                    <p>Certifique-se de que todas as informações estão corretas antes de salvar.</p>
+                    <p>Após salvar, você poderá editar ou excluir a viagem na lista de viagens.</p>
+                    <p>Se precisar fazer alterações, você pode voltar aos passos anteriores.</p>
+                    <p>Obrigado por usar nosso sistema de planejamento de viagens!</p>
+                    <aside class="flex justify-end w-full">
+                      <p-button
+                      id="save-button"
+                      label="Salvar Viagem"
+                      icon="pi pi-save"
+                      iconPos="right"
+                      (click)="addTravel()"
+                      />
+                    </aside>
+                  </main>
                 </div>
               </div>
               <div class="flex pt-6 justify-start">
