@@ -24,11 +24,11 @@
                         <input
                           pInputText
                           id="over_label"
-                          formControlName="destino"
+                          formControlName="nome"
                           autocomplete="off"
                           class="w-full"
                         />
-                        <label for="over_label">Destino da Vigem</label>
+                        <label for="over_label">Defina um nome para a Viagem</label>
                       </p-floatlabel>
                     </div>
 
@@ -106,15 +106,28 @@
                   <main>
                     <div class="header">
                       <div class="flex justify-center items-center">
-                        <p-floatlabel class="w-full">
-                          <input
-                            pInputText
-                            [formControl]="attractionInput"
-                            autocomplete="off"
-                            class="w-full"
-                          />
-                          <label for="over_label">Informe a atração</label>
-                        </p-floatlabel>
+                        <div>
+                          <p-floatlabel class="w-full">
+                            <input
+                              pInputText
+                              formControlName="destino"
+                              autocomplete="off"
+                              class="w-full"
+                            />
+                            <label for="over_label">Destino da Viagem</label>
+                          </p-floatlabel>
+                        </div>
+                        <div>
+                          <p-floatlabel class="w-full">
+                            <input
+                              pInputText
+                              [formControl]="attractionInput"
+                              autocomplete="off"
+                              class="w-full"
+                            />
+                            <label for="over_label">Informe a atração</label>
+                          </p-floatlabel>
+                        </div>
                         <p-button
                           label="Adicionar"
                           (onClick)="addAttraction()"
@@ -179,7 +192,7 @@
                 >
                   <main>
                     <div class="card flex justify-center">
-                        <p-accordion [value]="['0', '2']" [multiple]="true">
+                        <p-accordion [value]="['0', '2', '3']" [multiple]="true">
                               <p-accordion-panel value="0">
                                   <p-accordion-header>Passagens</p-accordion-header>
                                   <p-accordion-content class="flex flex-col gap-2">
@@ -259,13 +272,13 @@
                               </p-accordion-panel>
 
                               <p-accordion-panel value="2">
-                                  <p-accordion-header>Atrações / Gastos</p-accordion-header>
+                                  <p-accordion-header>Atrações</p-accordion-header>
                                   <p-accordion-content>
-                                    <p-virtualscroller [items]="atracoesList" [itemSize]="50" scrollHeight="300px" [style]="{ width: '500px', height: '300px' }">
+                                    <p-virtualscroller [items]="atracoesList" [itemSize]="50" scrollHeight="200px" [style]="{ width: '500px', height: '300px' }">
                                       <ng-template let-atracao pTemplate="item">
                                           <aside class="flex items-center p-2" style="height: 50px;">
                                             <span class="grow-6"> <i class="pi pi-map" style="color: #0ea5e9"></i> {{ atracao.nome }}</span>
-                                            <span class="grow-2 text-end">R$ {{ atracao.preco }}</span>
+                                            <span class="grow-2 text-end">R$ {{ atracao.valor }}</span>
                                             <button
                                               class="ml-auto p-button p-component p-button-text"
                                               (click)="editAttraction(atracao.id)"
@@ -279,6 +292,39 @@
                                                 id="delete-button"
                                                 class="ml-auto p-button p-component p-button-text"
                                                 (click)="deleteItem($event, atracao.id)"
+                                                pButton
+                                                icon="pi pi-trash"
+                                                styleClass="p-button-text p-button-rounded"
+                                                aria-label="Remove"
+                                              ></button>
+                                            }
+                                          </aside>
+                                      </ng-template>
+                                    </p-virtualscroller>
+                                  </p-accordion-content>
+                              </p-accordion-panel>
+
+                              <p-accordion-panel value="3">
+                                  <p-accordion-header>AGastos</p-accordion-header>
+                                  <p-accordion-content>
+                                    <p-virtualscroller [items]="gastosList" [itemSize]="50" scrollHeight="200px" [style]="{ width: '500px', height: '300px' }">
+                                      <ng-template let-gasto pTemplate="item">
+                                          <aside class="flex items-center p-2" style="height: 50px;">
+                                            <span class="grow-6"> <i class="pi pi-map" style="color: #0ea5e9"></i> {{ gasto.descricao }}</span>
+                                            <span class="grow-2 text-end">R$ {{ gasto.valor }}</span>
+                                            <button
+                                              class="ml-auto p-button p-component p-button-text"
+                                              (click)="editAttraction(gasto.id)"
+                                              pButton
+                                              icon="pi pi-pen-to-square"
+                                              styleClass="p-button-text p-button-rounded"
+                                              aria-label="Remove"
+                                            ></button>
+                                            @if(gasto.isAttraction) {
+                                              <button
+                                                id="delete-button"
+                                                class="ml-auto p-button p-component p-button-text"
+                                                (click)="deleteItem($event, gasto.id)"
                                                 pButton
                                                 icon="pi pi-trash"
                                                 styleClass="p-button-text p-button-rounded"
@@ -337,15 +383,28 @@
                           />
                         }
                       </div>
-                      <p>Lista de Gastos:</p>
-                      <p-virtualscroller [items]="atracoesList" [itemSize]="50" scrollHeight="300px" [style]="{ width: '500px', height: '300px' }">
-                        <ng-template let-gasto pTemplate="item">
-                          <aside class="flex items-center p-2" style="height: 50px;">
-                            <span class="grow-6"> <i class="pi pi-dollar" style="color: #0ea5e9"></i> {{ gasto.nome }}</span>
-                            <span class="grow-2 text-end">R$ {{ gasto.preco }}</span>
-                          </aside>
-                        </ng-template>
-                      </p-virtualscroller>
+                      <div>
+                        <p>Lista de Atrações:</p>
+                        <p-virtualscroller [items]="atracoesList" [itemSize]="50" scrollHeight="300px" [style]="{ width: '500px', height: '300px' }">
+                          <ng-template let-gasto pTemplate="item">
+                            <aside class="flex items-center p-2" style="height: 50px;">
+                              <span class="grow-6"> <i class="pi pi-dollar" style="color: #0ea5e9"></i> {{ gasto.nome }}</span>
+                              <span class="grow-2 text-end">R$ {{ gasto.valor }}</span>
+                            </aside>
+                          </ng-template>
+                        </p-virtualscroller>
+                      </div>
+                      <div>
+                        <p>Lista de Gastos:</p>
+                        <p-virtualscroller [items]="gastosList" [itemSize]="50" scrollHeight="300px" [style]="{ width: '500px', height: '300px' }">
+                          <ng-template let-gasto pTemplate="item">
+                            <aside class="flex items-center p-2" style="height: 50px;">
+                              <span class="grow-6"> <i class="pi pi-dollar" style="color: #0ea5e9"></i> {{ gasto.descricao }}</span>
+                              <span class="grow-2 text-end">R$ {{ gasto.valor }}</span>
+                            </aside>
+                          </ng-template>
+                        </p-virtualscroller>
+                      </div>
                       <p>Valor Total: R$ {{ travelForm.get('totalGastos')?.value }}</p>
                     </div>
                     <p>Você pode salvar a viagem para visualizá-la mais tarde.</p>
@@ -382,11 +441,11 @@
               <p-dialog class="modal" header="Edite a Atração" [modal]="true" [(visible)]="visible" [style]="{ display: 'flex', gap: '1rem', width: '25rem' }">
                 <aside class="flex items-center justify-between">
                   <label for="edit-nome">Atração</label>
-                  <input pInputText id="edit-nome" formControlName="nome" autocomplete="off" />
+                  <input pInputText id="edit-nome" formControlName="descricao" autocomplete="off" />
                 </aside>
                 <aside class="flex items-center justify-between">
                   <label for="edit-preco">Preço</label>
-                  <input pInputText id="edit-preco" type="number" formControlName="preco" autocomplete="off" />
+                  <input pInputText id="edit-preco" type="number" formControlName="valor" autocomplete="off" />
                 </aside>
                 <aside class="flex justify-end gap-2">
                   <p-button label="Atualizar" (click)="saveAttraction()" />

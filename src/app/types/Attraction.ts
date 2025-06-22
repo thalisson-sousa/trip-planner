@@ -1,1 +1,1 @@
-export type Attraction = { id: string; nome: string; preco: number; isAttraction: boolean };
+export type Attraction = { id: number; nome?: string; descricao?: string; valor: number; isAttraction: boolean };

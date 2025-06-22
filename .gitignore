@@ -40,3 +40,13 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# No complit
+src/app/components/resume-step/resume-step.component.html
+src/app/components/resume-step/resume-step.component.scss
+src/app/components/resume-step/resume-step.component.ts
+src/app/components/resume-step/resume-step.component.spec.ts
+
+src/environments/environment.development.ts
+
+src/environments/environment.ts
