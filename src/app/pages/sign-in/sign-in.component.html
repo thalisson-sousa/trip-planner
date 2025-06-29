@@ -1,0 +1,35 @@
+<div class="card">
+  <div class="logo">
+    <img src="/images/logo.png" alt="logo da pagina de login" />
+  </div>
+
+  <div class="container">
+    <div class="form">
+      <div class="flex flex-col gap-2">
+        <label for="username">Username</label>
+        <input pInputText id="username" type="text" />
+      </div>
+      <div class="flex flex-col gap-2">
+        <label for="password">Password</label>
+        <input pInputText id="password" type="password" />
+      </div>
+      <div class="flex">
+        <p-button
+          label="Login"
+          icon="pi pi-user"
+          class="w-full max-w-[17.35rem]"
+          styleClass="w-full mx-auto"
+        />
+      </div>
+    </div>
+
+    <div class="divider">
+      <p-divider layout="vertical" class="!hidden md:!flex"><b>OR</b></p-divider>
+      <p-divider layout="vertical" class="!flex md:!hidden" align="center"><b>OR</b></p-divider>
+    </div>
+
+    <div class="social-button">
+      <app-google-signin></app-google-signin>
+    </div>
+</div>
+
