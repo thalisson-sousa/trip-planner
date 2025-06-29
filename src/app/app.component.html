@@ -1,5 +1,19 @@
 <section class="app-container">
-  <div class="app-nav"> <app-navbar></app-navbar> </div>
-  <div class="app-main"> <router-outlet /> </div>
-  <div class="app-footer"> <app-footer></app-footer> </div>
+  <ng-container *ngIf="!isLoginPage; else loginPage">
+    <div class="app-nav">
+      <app-navbar></app-navbar>
+    </div>
+
+    <div class="app-main">
+      <router-outlet></router-outlet>
+    </div>
+
+    <div class="app-footer">
+      <app-footer></app-footer>
+    </div>
+  </ng-container>
+
+  <ng-template #loginPage>
+    <app-sign-in></app-sign-in>
+  </ng-template>
 </section>

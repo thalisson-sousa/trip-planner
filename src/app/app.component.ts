@@ -1,18 +1,31 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { SignInComponent } from "./pages/sign-in/sign-in.component";
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   imports: [
     RouterOutlet,
     NavbarComponent,
-    FooterComponent
-  ],
+    FooterComponent,
+    SignInComponent,
+    CommonModule
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'trip-planner';
+
+  isLoginPage: boolean = false;
+
+  constructor(private router: Router) {
+    this.router.events.subscribe(() => {
+      this.isLoginPage = this.router.url === '/login';
+    });
+  }
 }

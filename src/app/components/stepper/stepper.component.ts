@@ -67,6 +67,7 @@ export class StepperComponent {
     id: 0,
     descricao: '',
     valor: 0,
+    pagadorId: localStorage.getItem('userId') || '',
     isAttraction: true,
   };
 
@@ -83,6 +84,11 @@ export class StepperComponent {
   }
 
   travelForm = new FormGroup({
+    criador: new FormGroup({
+      id: new FormControl<number | null>(
+        Number(localStorage.getItem('userId'))
+      ),
+    }),
     nome: new FormControl<string | null>(null),
     destino: new FormControl<string | null>(null),
     url: new FormControl<string | null>(null),
@@ -115,7 +121,6 @@ export class StepperComponent {
       FormControl<Attraction | null>
     >;
   }
-
 
   // Getter que transforma os valores do FormArray em uma lista utilizável no OrderList
   get atracoesList(): Attraction[] {
@@ -184,6 +189,7 @@ export class StepperComponent {
         id: this.generateId(),
         descricao,
         valor,
+        pagadorId: localStorage.getItem('userId') || '',
         isAttraction: false,
       };
       this.gastos.push(this.formBuilder.control(novaPassagem));
