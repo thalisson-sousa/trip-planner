@@ -20,7 +20,11 @@ export class GoogleSigninComponent {
          // Armazena o token do usuário no localStorage
         localStorage.setItem('token', (res?.token));
         // Armazena o ID do usuário no localStorage
-        localStorage.setItem('userId', (res?.id));
+        localStorage.setItem('userId', (res?.user.id));
+        // Armazena o nome do usuário no localStorage
+        localStorage.setItem('userName', (res?.user.nome));
+        // Armazena a foto do usuário no localStorage
+        localStorage.setItem('userPhoto', (res?.user.foto));
 
         // Redireciona para a página inicial após o login
          this.Router.navigate(['/']);

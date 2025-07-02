@@ -1,4 +1,9 @@
 export type UserResponse = {
-  id: string;
+  user: {
+    id: string;
+    nome: string;
+    email: string;
+    foto: string;
+  }
   token: string;
 }

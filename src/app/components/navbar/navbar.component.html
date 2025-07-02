@@ -15,7 +15,12 @@
       </li>
     </ul>
   </div>
-  <div>
-    <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png" class="mr-2" size="large" shape="circle" />
+  <div style="display: flex; gap: 0.5rem; align-items: center; justify-content: center;">
+    <div>
+      <p-avatar class="avatar" [image]="imageUrl" class="mr-2" size="large" shape="circle" loading="lazy" />
+    </div>
+    <div style="height: 40px; position: relative;">
+      <p-speeddial [model]="items" direction="down"/>
+    </div>
   </div>
 </nav>
