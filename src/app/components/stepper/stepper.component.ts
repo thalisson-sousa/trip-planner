@@ -65,7 +65,7 @@ export class StepperComponent {
   visible: boolean = false;
   editedAttraction: Attraction = {
     id: 0,
-    descricao: '',
+    nome: '',
     valor: 0,
     pagadorId: localStorage.getItem('userId') || '',
     isAttraction: true,
@@ -199,19 +199,43 @@ export class StepperComponent {
     }
   }
 
+  editMode: 'attraction' | 'gasto' | null = null;
+
   // Método para editar uma atração existente
   editAttraction(id: string) {
     const attraction = this.getAttractionData(id);
     if (attraction) {
       this.editedAttraction = { ...attraction };
       this.editedId = id;
-
       this.editForm.patchValue({
         nome: attraction.nome,
         valor: attraction.valor,
       });
-
+      this.editMode = 'attraction'; // <--- Aqui!
       this.showDialog();
+    }
+  }
+
+  // Método para editar um gasto existente
+  editGasto(id: string) {
+    const gasto = this.gastosList.find((g) => g.id === Number(id));
+    if (gasto) {
+      this.editedAttraction = { ...gasto };
+      this.editedId = id;
+      this.editForm.patchValue({
+        nome: gasto.nome,
+        valor: gasto.valor,
+      });
+      this.editMode = 'gasto'; // <--- Aqui!
+      this.showDialog();
+    }
+  }
+
+  onSaveEdit() {
+    if (this.editMode === 'attraction') {
+      this.saveAttraction();
+    } else if (this.editMode === 'gasto') {
+      this.saveGasto();
     }
   }
 
@@ -227,6 +251,24 @@ export class StepperComponent {
           ...this.editForm.value,
         } as Attraction;
         this.atracao.at(index).setValue(updated);
+        this.updateTotalGastos(); // Atualiza total
+      }
+      this.visible = false;
+    }
+  }
+
+  // Método para salvar as alterações de um gasto
+  saveGasto() {
+    if (this.editedId && this.editForm.valid) {
+      const index = this.gastos.controls.findIndex(
+        (ctrl) => ctrl.value?.id === Number(this.editedId)
+      );
+      if (index !== -1) {
+        const updated = {
+          ...this.gastos.at(index).value,
+          ...this.editForm.value,
+        } as Attraction;
+        this.gastos.at(index).setValue(updated);
         this.updateTotalGastos(); // Atualiza total
       }
       this.visible = false;
