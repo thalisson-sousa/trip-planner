@@ -305,7 +305,7 @@
                               </p-accordion-panel>
 
                               <p-accordion-panel value="3">
-                                  <p-accordion-header>AGastos</p-accordion-header>
+                                  <p-accordion-header>Gastos</p-accordion-header>
                                   <p-accordion-content>
                                     <p-virtualscroller [items]="gastosList" [itemSize]="50" scrollHeight="200px" [style]="{ width: '500px', height: '300px' }">
                                       <ng-template let-gasto pTemplate="item">
@@ -441,7 +441,7 @@
               <p-dialog class="modal" header="Edite a Atração" [modal]="true" [(visible)]="visible" [style]="{ display: 'flex', gap: '1rem', width: '25rem' }">
                 <aside class="flex items-center justify-between">
                   <label for="edit-nome">Atração</label>
-                  <input pInputText id="edit-nome" formControlName="descricao" autocomplete="off" />
+                  <input pInputText id="edit-nome" formControlName="nome" autocomplete="off" />
                 </aside>
                 <aside class="flex items-center justify-between">
                   <label for="edit-preco">Preço</label>

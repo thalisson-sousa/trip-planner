@@ -100,7 +100,7 @@ export class StepperComponent {
   });
 
   editForm = this.formBuilder.group({
-    descricao: new FormControl<string | null>(null),
+    nome: new FormControl<string | null>(null),
     valor: new FormControl<number | null>(null),
   });
 
@@ -182,12 +182,12 @@ export class StepperComponent {
 
   // Método para adicionar um gasto de Passagens e Hospedagem
   addGasto() {
-    const descricao = this.GastoNome.value?.trim();
+    const nome = this.GastoNome.value?.trim();
     const valor = this.GastoPreco.value ?? 0;
-    if (descricao) {
+    if (nome) {
       const novaPassagem: Attraction = {
         id: this.generateId(),
-        descricao,
+        nome,
         valor,
         pagadorId: localStorage.getItem('userId') || '',
         isAttraction: false,
@@ -207,7 +207,7 @@ export class StepperComponent {
       this.editedId = id;
 
       this.editForm.patchValue({
-        descricao: attraction.descricao,
+        nome: attraction.nome,
         valor: attraction.valor,
       });
 
