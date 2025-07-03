@@ -19,7 +19,9 @@
                   <main>
                     <div class="header">
                       <h2>Informações Gerais</h2>
+                    </div>
 
+                    <div class="input-geral">
                       <p-floatlabel class="w-full">
                         <input
                           pInputText
@@ -61,7 +63,19 @@
                       </div>
                     </div>
 
-                    <div class="input-url">
+                    <div class="input-geral">
+                      <p-floatlabel class="w-full">
+                        <input
+                            pInputText
+                            formControlName="destino"
+                            autocomplete="off"
+                            class="w-full"
+                        />
+                        <label for="over_label">Destino da Viagem</label>
+                      </p-floatlabel>
+                    </div>
+
+                    <!-- <div class="input-url">
                       <p-inputgroup>
                         <p-inputgroup-addon>URL</p-inputgroup-addon>
                         <input
@@ -80,7 +94,7 @@
                         [preview]="true"
                       />
                     </div>
-                    }
+                    } -->
                   </main>
                   <!-- Step Gerais temina aqui!  -->
                 </div>
@@ -106,19 +120,8 @@
                   <main>
                     <div class="header">
                       <div class="flex justify-center items-center">
-                        <div>
-                          <p-floatlabel class="w-full">
-                            <input
-                              pInputText
-                              formControlName="destino"
-                              autocomplete="off"
-                              class="w-full"
-                            />
-                            <label for="over_label">Destino da Viagem</label>
-                          </p-floatlabel>
-                        </div>
-                        <div>
-                          <p-floatlabel class="w-full">
+                        <div class="w-full">
+                          <p-floatlabel>
                             <input
                               pInputText
                               [formControl]="attractionInput"
