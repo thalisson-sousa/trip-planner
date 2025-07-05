@@ -67,7 +67,11 @@ export class StepperComponent {
     id: 0,
     nome: '',
     valor: 0,
-    pagadorId: localStorage.getItem('userId') || '',
+    pagadorId: {
+      id: Number(localStorage.getItem('userId')) || 0,
+      nome: localStorage.getItem('userName') || '',
+      email: localStorage.getItem('userEmail') || '',
+    },
     isAttraction: true,
   };
 
@@ -185,11 +189,13 @@ export class StepperComponent {
     const nome = this.GastoNome.value?.trim();
     const valor = this.GastoPreco.value ?? 0;
     if (nome) {
-      const novaPassagem: Attraction = {
+      const novaPassagem: any = {
         id: this.generateId(),
         nome,
         valor,
-        pagadorId: localStorage.getItem('userId') || '',
+        pagador: {
+          id: Number(localStorage.getItem('userId')) || 0,
+        },
         isAttraction: false,
       };
       this.gastos.push(this.formBuilder.control(novaPassagem));
@@ -361,7 +367,7 @@ export class StepperComponent {
 
   addTravel() {
     if (this.travelForm.valid) {
-      console.log('Form Submitted', this.travelForm.value);
+      // console.log('Form Submitted', this.travelForm.value);
 
       this.TravelService.newTravel(this.travelForm.value).subscribe({
         next: (response) => {
