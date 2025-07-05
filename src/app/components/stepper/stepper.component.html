@@ -281,7 +281,7 @@
                                       <ng-template let-atracao pTemplate="item">
                                           <aside class="flex items-center p-2" style="height: 50px;">
                                             <span class="grow-6"> <i class="pi pi-map" style="color: #0ea5e9"></i> {{ atracao.nome }}</span>
-                                            <span class="grow-2 text-end">R$ {{ atracao.valor }}</span>
+                                            <span class="grow-2 text-end">R$ {{ atracao.valor }},00</span>
                                             <button
                                               class="ml-auto p-button p-component p-button-text"
                                               (click)="editAttraction(atracao.id)"
@@ -314,7 +314,7 @@
                                       <ng-template let-gasto pTemplate="item">
                                           <aside class="flex items-center p-2" style="height: 50px;">
                                             <span class="grow-6"> <i class="pi pi-map" style="color: #0ea5e9"></i> {{ gasto.nome }}</span>
-                                            <span class="grow-2 text-end">R$ {{ gasto.valor }}</span>
+                                            <span class="grow-2 text-end">R$ {{ gasto.valor }},00</span>
                                             <button
                                               class="ml-auto p-button p-component p-button-text"
                                               (click)="editGasto(gasto.id)"
@@ -339,6 +339,12 @@
                                     </p-virtualscroller>
                                   </p-accordion-content>
                               </p-accordion-panel>
+
+                              <div class="card flex justify-end">
+                                <span style="margin: 1em;">
+                                  <p> <i class="pi pi-dollar" style="color: #0ea5e9"></i> Valor Total: R$ {{ travelForm.get('totalGastos')?.value }},00</p>
+                                </span>
+                              </div>
                           </p-accordion>
                       </div>
                   </main>

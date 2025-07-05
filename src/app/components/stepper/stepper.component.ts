@@ -156,10 +156,17 @@ export class StepperComponent {
   }
 
   calcAllCoasts(): number {
-    return this.atracoesList.reduce(
+    const attractionsTotal = this.atracoesList.reduce(
       (total, attraction) => total + (attraction.valor || 0),
       0
     );
+
+    const gastosTotal = this.gastosList.reduce(
+      (total, gasto) => total + (gasto.valor || 0),
+      0
+    );
+
+    return attractionsTotal + gastosTotal;
   }
 
   // Função para atualizar o campo totalGastos do formulário
