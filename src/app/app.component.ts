@@ -9,11 +9,11 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-root',
   imports: [
+    CommonModule,
     RouterOutlet,
     NavbarComponent,
     FooterComponent,
     SignInComponent,
-    CommonModule
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

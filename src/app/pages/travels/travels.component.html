@@ -1,0 +1,77 @@
+<div class="min-h-screen bg-gray-100 font-sans antialiased">
+
+  <!-- Conteúdo Principal do Dashboard -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex justify-content-between align-items-center mb-6">
+      <h1 class="text-3xl font-bold text-gray-900">Minhas Viagens</h1>
+      <p-button label="Adicionar Nova Viagem" icon="pi pi-plus" styleClass="p-button-primary p-button-lg p-button-rounded"></p-button>
+    </div>
+
+    <!-- Filtros e Ordenação -->
+    <p-card class="p-6 mb-8 flex-2 justify-content-between align-items-center flex-wrap sm:flex-nowrap">
+      <div class="flex align-items-center mb-8 sm:mb-0 w-full">
+        <label for="filter-status" class=" w-full text-gray-700 font-medium mr-3 text-3xl">Filtrar por Status:</label>
+        <p-dropdown
+          id="filter-status"
+          [options]="filterOptions"
+          [(ngModel)]="selectedFilter"
+          (onChange)="applyFiltersAndSort()"
+          placeholder="Todas"
+          class="w-full sm:w-auto"
+        ></p-dropdown>
+      </div>
+
+      <div class="flex align-items-center w-full">
+        <label for="sort-by" class="w-full text-gray-700 font-medium mr-3 text-lg">Ordenar por:</label>
+        <p-dropdown
+          id="sort-by"
+          [options]="sortOptions"
+          [(ngModel)]="selectedSort"
+          (onChange)="applyFiltersAndSort()"
+          placeholder="Mais Recentes"
+          class="w-full sm:w-auto"
+        ></p-dropdown>
+      </div>
+    </p-card>
+
+    <!-- Lista de Cartões de Viagem -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <ng-container *ngIf="trips.length > 0; else noTrips">
+        <div *ngFor="let trip of trips" class="col">
+          <p-card styleClass="surface-card border-round-xl shadow-2 overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-4 h-full flex flex-column">
+            <ng-template pTemplate="header">
+              <img [src]="trip.imageUrl" [alt]="trip.nome" class="w-full h-12rem object-cover" (error)="trip.imageUrl = 'https://placehold.co/400x200/E5E7EB/4B5563?text=Imagem+Indisponível'"/>
+            </ng-template>
+            <div class="p-card-content flex flex-column flex-grow-1">
+              <div class="flex justify-content-between align-items-center mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">{{ trip.nome }}</h3>
+                <p-chip [ngClass]="getStatusSeverity(trip.status)" [label]="trip.status"></p-chip>
+              </div>
+              <p class="text-gray-600 mb-2 flex align-items-center">
+                <i class="pi pi-map-marker mr-2 text-gray-500"></i>
+                {{ trip.destino }}
+              </p>
+              <p class="text-gray-600 mb-2 flex align-items-center">
+                <i class="pi pi-calendar mr-2 text-gray-500"></i>
+                {{ trip.dataInicio }} - {{ trip.dataFim }}
+              </p>
+              <p class="text-gray-600 mb-4 flex align-items-center">
+                <i class="pi pi-wallet mr-2 text-gray-500"></i>
+                Orçamento: {{ trip.budget }}
+              </p>
+              <div class="mt-auto flex justify-content-end space-x-3">
+                <p-button label="Ver Detalhes" styleClass="p-button-secondary p-button-rounded"></p-button>
+                <p-button label="Editar" styleClass="p-button-outlined p-button-rounded"></p-button>
+              </div>
+            </div>
+          </p-card>
+        </div>
+      </ng-container>
+      <ng-template #noTrips>
+        <div class="col-span-full text-center py-10 text-gray-500 text-lg">
+          Nenhuma viagem encontrada com os filtros selecionados.
+        </div>
+      </ng-template>
+    </div>
+  </main>
+</div>
