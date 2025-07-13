@@ -4,7 +4,6 @@
   <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="flex justify-content-between align-items-center mb-6">
       <h1 class="text-3xl font-bold text-gray-900">Minhas Viagens</h1>
-      <p-button label="Adicionar Nova Viagem" icon="pi pi-plus" styleClass="p-button-primary p-button-lg p-button-rounded"></p-button>
     </div>
 
     <!-- Filtros e Ordenação -->
@@ -53,11 +52,11 @@
               </p>
               <p class="text-gray-600 mb-2 flex align-items-center">
                 <i class="pi pi-calendar mr-2 text-gray-500"></i>
-                {{ trip.dataInicio }} - {{ trip.dataFim }}
+                {{ trip.dataInicio | date:'dd/MM/yyyy' }} - {{ trip.dataFim | date:'dd/MM/yyyy' }}
               </p>
               <p class="text-gray-600 mb-4 flex align-items-center">
                 <i class="pi pi-wallet mr-2 text-gray-500"></i>
-                Orçamento: {{ trip.budget }}
+                Orçamento: {{ trip.totalGastos | currency:'BRL':'symbol':'1.2-2' }}
               </p>
               <div class="mt-auto flex justify-content-end space-x-3">
                 <p-button label="Ver Detalhes" styleClass="p-button-secondary p-button-rounded"></p-button>
@@ -68,7 +67,7 @@
         </div>
       </ng-container>
       <ng-template #noTrips>
-        <div class="col-span-full text-center py-10 text-gray-500 text-lg">
+        <div class="col-span-4 text-center py-10 text-gray-500 text-lg">
           Nenhuma viagem encontrada com os filtros selecionados.
         </div>
       </ng-template>

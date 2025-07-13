@@ -281,7 +281,7 @@
                                       <ng-template let-atracao pTemplate="item">
                                           <aside class="flex items-center p-2" style="height: 50px;">
                                             <span class="grow-6"> <i class="pi pi-map" style="color: #0ea5e9"></i> {{ atracao.nome }}</span>
-                                            <span class="grow-2 text-end">R$ {{ atracao.valor }},00</span>
+                                            <span class="grow-2 text-end"> {{ atracao.valor | currency:'BRL':'symbol':'1.2-2' }}</span>
                                             <button
                                               class="ml-auto p-button p-component p-button-text"
                                               (click)="editAttraction(atracao.id)"
@@ -314,7 +314,7 @@
                                       <ng-template let-gasto pTemplate="item">
                                           <aside class="flex items-center p-2" style="height: 50px;">
                                             <span class="grow-6"> <i class="pi pi-map" style="color: #0ea5e9"></i> {{ gasto.nome }}</span>
-                                            <span class="grow-2 text-end">R$ {{ gasto.valor }},00</span>
+                                            <span class="grow-2 text-end"> {{ gasto.valor | currency:'BRL':'symbol':'1.2-2' }}</span>
                                             <button
                                               class="ml-auto p-button p-component p-button-text"
                                               (click)="editGasto(gasto.id)"
@@ -342,7 +342,7 @@
 
                               <div class="card flex justify-end">
                                 <span style="margin: 1em;">
-                                  <p> <i class="pi pi-dollar" style="color: #0ea5e9"></i> Valor Total: R$ {{ travelForm.get('totalGastos')?.value }},00</p>
+                                  <p> <i class="pi pi-dollar" style="color: #0ea5e9"></i> Valor Total: {{ travelForm.get('totalGastos')?.value | currency:'BRL':'symbol':'1.2-2' }}</p>
                                 </span>
                               </div>
                           </p-accordion>
@@ -397,7 +397,7 @@
                           <ng-template let-gasto pTemplate="item">
                             <aside class="flex items-center p-2" style="height: 50px;">
                               <span class="grow-6"> <i class="pi pi-dollar" style="color: #0ea5e9"></i> {{ gasto.nome }}</span>
-                              <span class="grow-2 text-end">R$ {{ gasto.valor }}</span>
+                              <span class="grow-2 text-end">R$ {{ gasto.valor | currency:'BRL':'symbol':'1.2-2' }}</span>
                             </aside>
                           </ng-template>
                         </p-virtualscroller>
@@ -408,12 +408,12 @@
                           <ng-template let-gasto pTemplate="item">
                             <aside class="flex items-center p-2" style="height: 50px;">
                               <span class="grow-6"> <i class="pi pi-dollar" style="color: #0ea5e9"></i> {{ gasto.nome }}</span>
-                              <span class="grow-2 text-end">R$ {{ gasto.valor }}</span>
+                              <span class="grow-2 text-end">R$ {{ gasto.valor | currency:'BRL':'symbol':'1.2-2' }}</span>
                             </aside>
                           </ng-template>
                         </p-virtualscroller>
                       </div>
-                      <p>Valor Total: R$ {{ travelForm.get('totalGastos')?.value }}</p>
+                      <p>Valor Total: {{ travelForm.get('totalGastos')?.value | currency:'BRL':'symbol':'1.2-2' }}</p>
                     </div>
                     <p>Você pode salvar a viagem para visualizá-la mais tarde.</p>
                     <p>Certifique-se de que todas as informações estão corretas antes de salvar.</p>

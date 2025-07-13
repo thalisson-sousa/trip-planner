@@ -5,6 +5,6 @@ export type Trip = {
   dataInicio: string;
   dataFim: string;
   status: string;
-  budget: string;
+  totalGastos: string;
   imageUrl: string;
 }

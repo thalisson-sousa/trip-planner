@@ -30,6 +30,7 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { Attraction } from '../../types/Attraction';
 import { CommonModule } from '@angular/common';
+import { stat } from 'fs';
 
 @Component({
   selector: 'app-stepper',
@@ -98,6 +99,7 @@ export class StepperComponent {
     url: new FormControl<string | null>(null),
     dataInicio: new FormControl<Date | null>(null),
     dataFim: new FormControl<Date | null>(null),
+    status: new FormControl<string | null>('Em Planejamento'),
     gastos: this.formBuilder.array<FormControl<Attraction | null>>([]),
     atividades: this.formBuilder.array<FormControl<Attraction | null>>([]),
     totalGastos: new FormControl<number | null>(null),

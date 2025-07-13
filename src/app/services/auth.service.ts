@@ -27,8 +27,7 @@ export class AuthService {
           return true;
         }),
         catchError((error) => {
-          console.error('Token validation failed:', error);
-          localStorage.clear();
+          localStorage.removeItem('token');
           this.isvalid = false;
           return of(false);
         })
