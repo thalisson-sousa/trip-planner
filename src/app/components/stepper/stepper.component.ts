@@ -30,7 +30,7 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { Attraction } from '../../types/Attraction';
 import { CommonModule } from '@angular/common';
-import { stat } from 'fs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-stepper',
@@ -113,7 +113,8 @@ export class StepperComponent {
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private TravelService: TravelService
+    private TravelService: TravelService,
+    private route: Router
   ) {}
 
   get atracao(): FormArray<FormControl<Attraction | null>> {
@@ -380,7 +381,7 @@ export class StepperComponent {
 
       this.TravelService.newTravel(this.travelForm.value).subscribe({
         next: (response) => {
-          console.log('Viagem adicionada com sucesso:', response);
+          // console.log('Viagem adicionada com sucesso:', response);
           this.messageService.add({
             severity: 'success',
             summary: 'Viagem adicionada com sucesso!',
@@ -392,8 +393,12 @@ export class StepperComponent {
         },
       });
 
-      this.travelForm.reset();
-      this.atracao.clear();
+      // Redirecionar para a página de viagens
+      setTimeout(() => {
+        this.travelForm.reset(); // Reseta o formulário após salvar
+        this.route.navigate(['/travels']);
+      }, 2000); // Atraso de 2 segundo para garantir que a mensagem
+
     } else {
       console.log('Form is invalid');
     }

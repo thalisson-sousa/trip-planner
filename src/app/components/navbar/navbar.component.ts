@@ -42,8 +42,10 @@ export class NavbarComponent {
                 icon: 'pi pi-sign-out',
                 command: () => {
                     localStorage.clear();
-                    window.location.reload(); // Recarrega a página para aplicar as mudanças
-                    this.route.navigate(['/']);
+                    this.route.navigate(['/']).then(() => {
+                        window.location.reload(); // Recarrega a página para aplicar as mudanças
+                    }
+                  );
                 }
             },
         ];
