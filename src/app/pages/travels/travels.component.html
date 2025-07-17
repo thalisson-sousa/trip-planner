@@ -59,8 +59,8 @@
                 Orçamento: {{ trip.totalGastos | currency:'BRL':'symbol':'1.2-2' }}
               </p>
               <div class="mt-auto flex justify-content-end space-x-3">
-                <p-button label="Ver Detalhes" styleClass="p-button-secondary p-button-rounded"></p-button>
-                <p-button label="Editar" styleClass="p-button-outlined p-button-rounded"></p-button>
+                <p-button label="Ver Detalhes" styleClass="p-button-secondary p-button-rounded" (click)="showTripDetails(trip)"></p-button>
+                <p-button label="Editar" styleClass="p-button-outlined p-button-rounded" (click)="showTripEdit(trip)"></p-button>
               </div>
             </div>
           </p-card>

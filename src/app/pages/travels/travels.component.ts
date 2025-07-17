@@ -13,6 +13,10 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ChipModule } from 'primeng/chip';
 import { Trip } from '../../types/Trip';
 
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { TripDetailModalComponent } from '../../components/trip-detail-modal/trip-detail-modal.component';
+import { TripEditModalComponent } from '../../components/trip-edit-modal/trip-edit-modal.component';
+
 
 @Component({
   selector: 'app-travels',
@@ -26,7 +30,8 @@ import { Trip } from '../../types/Trip';
     ChipModule
   ],
   templateUrl: './travels.component.html',
-  styleUrl: './travels.component.scss'
+  styleUrl: './travels.component.scss',
+  providers: [DialogService] // Necessário para usar o DialogService
 })
 export class TravelsComponent {
 
@@ -39,12 +44,13 @@ export class TravelsComponent {
   sortOptions: string[] = ['Mais Recentes', 'Mais Antigas'];
   selectedSort: string = 'Mais Recentes';
 
-  constructor(private service: TravelService) {}
+  ref: DynamicDialogRef | undefined; // Referência para o modal aberto
+
+  constructor(private service: TravelService, public dialogService: DialogService) {}
 
   ngOnInit() {
     this.service.getTravels().subscribe((trips: Trip[]) => {
       this.initialTrips$ = trips;
-      console.log('Viagens carregadas:', this.initialTrips$);
       this.applyFiltersAndSort(); // Aplica filtros e ordenação após carregar as viagens
     });
   }
@@ -74,8 +80,18 @@ export class TravelsComponent {
 
     // Ordenação
     filtered.sort((a, b) => {
-      const dateA = new Date(a.dataInicio.split('/').reverse().join('-'));
-      const dateB = new Date(b.dataInicio.split('/').reverse().join('-'));
+      const dateA = new Date(
+        (typeof a.dataInicio === 'string' ? a.dataInicio : a.dataInicio.toISOString().slice(0, 10).replace(/-/g, '/'))
+          .split('/')
+          .reverse()
+          .join('-')
+      );
+      const dateB = new Date(
+        (typeof b.dataInicio === 'string' ? b.dataInicio : b.dataInicio.toISOString().slice(0, 10).replace(/-/g, '/'))
+          .split('/')
+          .reverse()
+          .join('-')
+      );
 
       if (this.selectedSort === 'Mais Recentes') {
         return dateB.getTime() - dateA.getTime();
@@ -86,6 +102,40 @@ export class TravelsComponent {
     });
 
     this.trips = filtered;
+  }
+
+    // Abre o modal de detalhes da viagem
+  showTripDetails(trip: Trip) {
+    this.ref = this.dialogService.open(TripDetailModalComponent, {
+      header: 'Detalhes da Viagem',
+      width: '50vw',
+      modal: true,
+      data: { trip: trip },
+      styleClass: 'custom-modal-dialog' // Classe para estilização personalizada
+    });
+  }
+
+  // Abre o modal de edição da viagem
+  showTripEdit(trip: Trip) {
+    this.ref = this.dialogService.open(TripEditModalComponent, {
+      header: 'Editar Viagem',
+      width: '60vw',
+      modal: true,
+      data: { trip: { ...trip } }, // Passa uma cópia para evitar modificações diretas
+      styleClass: 'custom-modal-dialog' // Classe para estilização personalizada
+    });
+
+    // Opcional: Lidar com o resultado do modal de edição
+    this.ref.onClose.subscribe((editedTrip: Trip) => {
+      if (editedTrip) {
+        // Encontra a viagem original e a atualiza
+        const index = this.initialTrips$.findIndex(t => t.id === editedTrip.id);
+        if (index !== -1) {
+          this.initialTrips$[index] = editedTrip;
+          this.applyFiltersAndSort(); // Reaplicar filtros e ordenação após a edição
+        }
+      }
+    });
   }
 
 }

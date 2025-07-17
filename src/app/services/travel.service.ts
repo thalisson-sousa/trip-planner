@@ -31,7 +31,7 @@ export class TravelService {
       Authorization: `Bearer ${this.AuthToken}`,
     });
 
-    const url = `${this.apiUrl}/full`;
+    const url = `${this.apiUrl}/user/${localStorage.getItem('userId')}`;
     return this.http.get<Trip[]>(url, { headers }).pipe(
       map((response: Trip[]) => {
         response.forEach((trip: Trip) => {

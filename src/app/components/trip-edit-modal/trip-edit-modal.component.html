@@ -1,0 +1,104 @@
+<div class="p-6 rounded-3xl bg-white shadow-5 w-full max-w-3xl mx-auto">
+  <form (ngSubmit)="saveChanges()">
+    <div class="editForm">
+
+      <section class="inputDates">
+        <div class="flex flex-col">
+          <label class="text-sm font-medium text-gray-700 mb-1"
+            >Data de Início</label
+          >
+          <p-calendar
+            [(ngModel)]="editedTrip!.dataInicio"
+            name="startDate"
+            dateFormat="dd/mm/yy"
+            [showIcon]="true"
+            class="w-full rounded-lg"
+            required
+          ></p-calendar>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="text-sm font-medium text-gray-700 mb-1"
+            >Data de Fim</label
+          >
+          <p-calendar
+            [(ngModel)]="editedTrip!.dataFim"
+            name="endDate"
+            dateFormat="dd/mm/yy"
+            [showIcon]="true"
+            class="w-full rounded-lg"
+            required
+          ></p-calendar>
+        </div>
+      </section>
+
+      <div class="flex flex-col">
+        <label class="text-sm font-medium text-gray-700 mb-1"
+          >Nome da Viagem</label
+        >
+        <input
+          pInputText
+          [(ngModel)]="editedTrip!.nome"
+          name="name"
+          required
+          class="p-inputtext p-component rounded-lg"
+        />
+      </div>
+
+      <div class="flex flex-col">
+        <label class="text-sm font-medium text-gray-700 mb-1">Destino</label>
+        <input
+          pInputText
+          [(ngModel)]="editedTrip!.destino"
+          name="destination"
+          required
+          class="p-inputtext p-component rounded-lg"
+        />
+      </div>
+
+      <div class="flex flex-col">
+        <label class="text-sm font-medium text-gray-700 mb-1">Status</label>
+        <p-dropdown
+          [options]="statusOptions"
+          [(ngModel)]="editedTrip!.status"
+          name="status"
+          placeholder="Selecione o Status"
+          class="w-full rounded-lg"
+          required
+        ></p-dropdown>
+      </div>
+
+      <div class="flex flex-col">
+        <label class="text-sm font-medium text-gray-700 mb-1"
+          >Orçamento (R$)</label
+        >
+        <p-inputNumber
+          [(ngModel)]="editedTrip!.totalGastos"
+          name="budget"
+          mode="currency"
+          currency="BRL"
+          locale="pt-BR"
+          [minFractionDigits]="2"
+          [maxFractionDigits]="2"
+          class="w-full rounded-lg"
+          required
+        ></p-inputNumber>
+      </div>
+    </div>
+
+    <aside class="flex justify-end space-x-3 mt-6">
+      <p-button
+        label="Cancelar"
+        icon="pi pi-times"
+        styleClass="p-button-outlined p-button-rounded text-sm"
+        (click)="cancelEdit()"
+      ></p-button>
+      <p-button
+        label="Salvar"
+        icon="pi pi-check"
+        styleClass="p-button-primary p-button-rounded text-sm"
+        type="submit"
+      ></p-button>
+    </aside>
+  </form>
+</div>
