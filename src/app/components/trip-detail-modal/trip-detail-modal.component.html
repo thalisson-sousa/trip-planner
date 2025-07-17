@@ -1,0 +1,48 @@
+<div class="p-6 rounded-3xl bg-white shadow-5 w-full max-w-3xl mx-auto">
+  <div class="flex flex-col items-center text-center mb-6">
+    <img [src]="trip?.imageUrl" [alt]="trip?.nome"
+         class="w-full max-h-64 object-cover rounded-2xl mb-4"
+         (error)="trip!.imageUrl = 'https://placehold.co/600x300/E5E7EB/4B5563?text=Imagem+Indisponível'" />
+
+    <h2 class="text-3xl font-semibold text-gray-900">{{ trip?.nome }}</h2>
+    <p-chip [label]="trip?.status" [ngClass]="getStatusSeverity(trip?.status || '')" class="mt-2"></p-chip>
+  </div>
+
+  <div class="containerInfos">
+    <div class="infos">
+      <div class="flex items-center text-gray-800 gap-2">
+        <i class="pi pi-map-marker text-gray-500"></i>
+        <label class="destino-label">Destino</label>
+      </div>
+      <span>{{ trip?.destino }}</span>
+    </div>
+
+    <div class="infos">
+      <div class="flex items-center text-gray-800 gap-2">
+        <i class="pi pi-calendar text-gray-500"></i>
+        <label class="destino-label">Período</label>
+      </div>
+      <span>{{ trip?.dataInicio | date:'dd/MM/yyyy' }} a {{ trip?.dataFim | date:'dd/MM/yyyy' }}</span>
+    </div>
+
+    <div class="infos">
+      <div class="flex items-center text-gray-800 gap-2">
+        <i class="pi pi-wallet text-gray-500"></i>
+        <label class="destino-label">Orçamento</label>
+      </div>
+      <span>R$ {{ trip?.totalGastos | number:'1.2-2' }}</span>
+    </div>
+
+    <div class="infos">
+      <div class="flex items-center text-gray-800 gap-2">
+        <i class="pi pi-hashtag text-gray-500"></i>
+        <label class="destino-label">ID da Viagem</label>
+      </div>
+      <span>{{ trip?.id }}</span>
+    </div>
+  </div>
+
+  <div class="flex justify-end pt-6">
+    <p-button label="Fechar" icon="pi pi-times" styleClass="p-button-rounded p-button-secondary text-sm" (click)="closeModal()"></p-button>
+  </div>
+</div>

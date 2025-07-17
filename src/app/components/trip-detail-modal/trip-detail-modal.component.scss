@@ -1,0 +1,20 @@
+.containerInfos {
+  display: flex;
+  flex-direction: column;
+  //gap: 0.3rem;
+  margin-top: 2rem;
+
+  .infos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 1rem;
+
+    .destino-label {
+      font-weight: bold;
+      color: #4a5568; /* Tailwind's gray-700 */
+      margin-left: 0.2rem;
+    }
+  }
+}
+
+
