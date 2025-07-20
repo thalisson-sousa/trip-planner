@@ -121,34 +121,33 @@
         <!-- PASSO 4: GASTOS -->
         <div *ngSwitchCase="3">
              <p-panel header="Controle de Gastos">
-                <div class="p-fluid p-formgrid p-grid p-ai-end p-mb-4">
-                    <div class="p-field p-col-5">
-                        <label>Nome do Gasto</label>
-                        <input pInputText [(ngModel)]="newExpense.nome">
+                <div class="spendsCard">
+                    <div class="input-spend">
+                        <input placeholder="Nome do Gasto" [(ngModel)]="newExpense.nome">
                     </div>
-                    <div class="p-field p-col-4">
-                        <label>Valor (R$)</label>
-                        <p-inputNumber [(ngModel)]="newExpense.valor" mode="currency" currency="BRL" locale="pt-BR"></p-inputNumber>
+                    <div class="input-spend">
+                        <input type="number" [(ngModel)]="newExpense.valor" placeholder="Valor (R$)" mode="currency" currency="BRL" locale="pt-BR">
                     </div>
-                    <div class="p-field p-col-3">
-                        <p-button label="Adicionar" icon="pi pi-plus" (click)="addExpense()"></p-button>
+                    <div class="input-spend">
+                        <button class="p-button" (click)="addExpense()">Adicionar</button>
                     </div>
                 </div>
-                <p-dataView [value]="tripData.gastos" layout="list">
-                    <ng-template let-gasto pTemplate="listItem">
-                        <div class="p-d-flex p-jc-between p-ai-center expense-item">
-                            <div>
-                                <div class="font-bold">{{gasto.nome}}</div>
-                                <small>Pago por: {{gasto.nomePagador}}</small>
-                            </div>
-                            <div class="p-d-flex p-ai-center">
-                                <span class="font-bold p-mr-3">{{gasto.valor | currency:'BRL'}}</span>
-                                <p-button icon="pi pi-trash" styleClass="p-button-danger p-button-text" (click)="removeExpense(gasto.id)"></p-button>
-                            </div>
-                        </div>
-                    </ng-template>
-                </p-dataView>
-                <div class="p-text-right p-mt-4 p-pt-4 border-top-1 border-gray-200">
+                <div>
+                  <ul class="expense_list">
+                    <li *ngFor="let gasto of tripData.gastos" class="expense-item">
+                      <div class="expense-details">
+                        <span>{{ gasto.nome }}</span>
+                        <span>Pago por: {{ gasto.nomePagador }}</span>
+                      </div>
+                      <div>
+                        <span class="font-bold">{{ gasto.valor | currency:'BRL' }}</span>
+                        <p-button icon="pi pi-trash" styleClass="p-button-danger p-button-text" (click)="removeExpense(gasto.id)"></p-button>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <hr class="p-my-2">
+                <div class="totalSpendend">
                     <span class="text-xl font-bold">Total Previsto: {{ getTotalExpenses() | currency:'BRL' }}</span>
                 </div>
              </p-panel>

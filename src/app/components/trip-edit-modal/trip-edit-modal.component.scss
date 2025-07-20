@@ -49,6 +49,81 @@
     min-height: 20vh;
 }
 
+.spendsCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  .spend {
+    display: flex;
+  }
+
+  .input-spend {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom: 1rem;
+  }
+  input {
+    width: 100%;
+    height: 2.5rem;
+    border-radius: 6px;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    color: #495057;
+  }
+
+  .p-button {
+    width: 100%;
+    height: 2.5rem;
+    color: #ffffff;
+  }
+}
+
+.expense_list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    .expense-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        margin-bottom: 0.5rem;
+    }
+
+    .expense-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+
+        span:first-child {
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            color: #343a40;
+        }
+
+        span:last-child {
+            font-size: 0.8rem;
+            color: #495057;
+        }
+    }
+}
+
+.totalSpendend {
+    text-align: right;
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 1rem;
+    font-weight: 600;
+    color: #343a40;
+}
+
 // Estilos para o conteúdo de cada passo
 .step-content {
     min-height: 50vh;
