@@ -1,104 +1,196 @@
-<div class="p-6 rounded-3xl bg-white shadow-5 w-full max-w-3xl mx-auto">
-  <form (ngSubmit)="saveChanges()">
-    <div class="editForm">
+<!-- Toast para exibir notificações -->
+<p-toast></p-toast>
 
-      <section class="inputDates">
-        <div class="flex flex-col">
-          <label class="text-sm font-medium text-gray-700 mb-1"
-            >Data de Início</label
-          >
-          <p-calendar
-            [(ngModel)]="editedTrip!.dataInicio"
-            name="startDate"
-            dateFormat="dd/mm/yy"
-            [showIcon]="true"
-            class="w-full rounded-lg"
-            required
-          ></p-calendar>
+<!-- Indicador de Passos -->
+<p-steps [model]="steps" [(activeIndex)]="activeIndex" [readonly]="false"></p-steps>
+
+<!-- Espaçamento entre os elementos -->
+<div style="margin-top: 2rem;"></div>
+
+<!-- Conteúdo dos Passos -->
+<div *ngIf="tripData">
+    <ng-container [ngSwitch]="activeIndex">
+
+        <!-- PASSO 1: INFORMAÇÕES GERAIS -->
+        <div *ngSwitchCase="0">
+            <p-panel header="Informações Gerais da Viagem">
+                <div class="infoCard">
+                    <div >
+                        <label for="nome">Nome da Viagem</label>
+                        <input class="inputCard" id="nome" type="text" pInputText [(ngModel)]="tripData.nome">
+                    </div>
+                    <div >
+                        <label for="destino">Destino(s)</label>
+                        <input class="inputCard" id="destino" type="text" pInputText [(ngModel)]="tripData.destino">
+                    </div>
+                    <div >
+                        <label for="dataInicio">Data de Início</label>
+                        <p-calendar class="inputCard" id="dataInicio" [(ngModel)]="tripData.dataInicio" dateFormat="yy-mm-dd" (onSelect)="generateCalendar()"></p-calendar>
+                    </div>
+                    <div >
+                        <label for="dataFim">Data de Fim</label>
+                        <p-calendar class="inputCard" id="dataFim" [(ngModel)]="tripData.dataFim" dateFormat="yy-mm-dd" (onSelect)="generateCalendar()"></p-calendar>
+                    </div>
+                    <div >
+                        <label for="status">Status</label>
+                        <p-dropdown class="inputCard" id="status" [options]="statusOptions" [(ngModel)]="tripData.status"></p-dropdown>
+                    </div>
+                    <div >
+                        <label for="nomeCriador">Criador</label>
+                        <input class="inputCard" id="nomeCriador" type="text" pInputText [(ngModel)]="tripData.nomeCriador" disabled>
+                    </div>
+                </div>
+            </p-panel>
+              <!-- Espaçamento entre os elementos -->
+              <div style="margin-top: 1rem;"></div>
         </div>
 
-        <div class="flex flex-col">
-          <label class="text-sm font-medium text-gray-700 mb-1"
-            >Data de Fim</label
-          >
-          <p-calendar
-            [(ngModel)]="editedTrip!.dataFim"
-            name="endDate"
-            dateFormat="dd/mm/yy"
-            [showIcon]="true"
-            class="w-full rounded-lg"
-            required
-          ></p-calendar>
+        <!-- PASSO 2: PARTICIPANTES -->
+        <div *ngSwitchCase="1">
+            <p-panel class="cards" header="Gerenciar Participantes">
+
+                <div class="manegeCard" style="display: flex; gap: 1rem;">
+                  <input type="text" placeholder="Nome ou e-mail do participante" [(ngModel)]="newParticipantName" style="flex: 1;">
+                  <p-button label="Convidar" icon="pi pi-plus" (click)="addParticipant()"></p-button>
+                </div>
+
+                <div class="participantCard">
+                    <div class="participant-list">
+                        <div class="participant-item creator">
+                            <span>{{ tripData.nomeCriador }} (Criador)</span>
+                            <small>Não pode ser removido</small>
+                        </div>
+                        <div *ngFor="let p of tripData.participantes" class="participant-item">
+                            <span>{{ p.nome }}</span>
+                            <p-button icon="pi pi-trash" styleClass="p-button-danger p-button-text" (click)="removeParticipant(p.nome)"></p-button>
+                        </div>
+                        <div *ngIf="!tripData.participantes || tripData.participantes.length === 0" class="text-center p-3">
+                            Nenhum participante convidado ainda.
+                        </div>
+                    </div>
+                </div>
+            </p-panel>
+              <!-- Espaçamento entre os elementos -->
+              <div style="margin-top: 1rem;"></div>
         </div>
-      </section>
 
-      <div class="flex flex-col">
-        <label class="text-sm font-medium text-gray-700 mb-1"
-          >Nome da Viagem</label
-        >
-        <input
-          pInputText
-          [(ngModel)]="editedTrip!.nome"
-          name="name"
-          required
-          class="p-inputtext p-component rounded-lg"
-        />
-      </div>
+        <!-- PASSO 3: ATIVIDADES -->
+        <div *ngSwitchCase="2">
+            <p-panel header="Planejamento de Atividades">
+                <div class="p-grid">
+                    <div class="p-col-12 p-lg-4">
+                        <div class="unscheduled-list">
+                            <h4>Atividades para Agendar</h4>
+                            <p class="help-text"><i class="pi pi-hand-point-up p-mr-1"></i>Arraste uma atividade para o calendário.</p>
+                            <div *ngFor="let activity of getUnscheduledActivities()"
+                                 class="activity-card"
+                                 pDraggable="activities"
+                                 (onDragStart)="dragStart(activity)"
+                                 (onDragEnd)="dragEnd()">
+                                <div class="font-bold">{{ activity.nome }}</div>
+                                <div class="text-sm">{{ activity.valor | currency:'BRL' }}</div>
+                            </div>
+                            <div *ngIf="getUnscheduledActivities().length === 0" class="text-center p-3">
+                                Todas as atividades foram agendadas!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-col-12 p-lg-8">
+                        <div class="calendar-grid">
+                            <div *ngFor="let day of weekDays" class="calendar-header">{{ day }}</div>
+                        </div>
+                        <div class="calendar-grid">
+                            <div *ngFor="let i of [].constructor(calendarDays[0]?.getDay() || 0)"></div>
+                            <div *ngFor="let day of calendarDays"
+                                 class="calendar-day"
+                                 pDroppable="activities"
+                                 (onDrop)="drop(day)">
+                                <span class="day-number">{{ day.getDate() }}</span>
+                                <div class="activities-in-day">
+                                    <div *ngFor="let act of getActivitiesForDay(day)" class="day-activity">
+                                        {{ act.nome }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p-panel>
+        </div>
 
-      <div class="flex flex-col">
-        <label class="text-sm font-medium text-gray-700 mb-1">Destino</label>
-        <input
-          pInputText
-          [(ngModel)]="editedTrip!.destino"
-          name="destination"
-          required
-          class="p-inputtext p-component rounded-lg"
-        />
-      </div>
+        <!-- PASSO 4: GASTOS -->
+        <div *ngSwitchCase="3">
+             <p-panel header="Controle de Gastos">
+                <div class="p-fluid p-formgrid p-grid p-ai-end p-mb-4">
+                    <div class="p-field p-col-5">
+                        <label>Nome do Gasto</label>
+                        <input pInputText [(ngModel)]="newExpense.nome">
+                    </div>
+                    <div class="p-field p-col-4">
+                        <label>Valor (R$)</label>
+                        <p-inputNumber [(ngModel)]="newExpense.valor" mode="currency" currency="BRL" locale="pt-BR"></p-inputNumber>
+                    </div>
+                    <div class="p-field p-col-3">
+                        <p-button label="Adicionar" icon="pi pi-plus" (click)="addExpense()"></p-button>
+                    </div>
+                </div>
+                <p-dataView [value]="tripData.gastos" layout="list">
+                    <ng-template let-gasto pTemplate="listItem">
+                        <div class="p-d-flex p-jc-between p-ai-center expense-item">
+                            <div>
+                                <div class="font-bold">{{gasto.nome}}</div>
+                                <small>Pago por: {{gasto.nomePagador}}</small>
+                            </div>
+                            <div class="p-d-flex p-ai-center">
+                                <span class="font-bold p-mr-3">{{gasto.valor | currency:'BRL'}}</span>
+                                <p-button icon="pi pi-trash" styleClass="p-button-danger p-button-text" (click)="removeExpense(gasto.id)"></p-button>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-dataView>
+                <div class="p-text-right p-mt-4 p-pt-4 border-top-1 border-gray-200">
+                    <span class="text-xl font-bold">Total Previsto: {{ getTotalExpenses() | currency:'BRL' }}</span>
+                </div>
+             </p-panel>
+        </div>
 
-      <div class="flex flex-col">
-        <label class="text-sm font-medium text-gray-700 mb-1">Status</label>
-        <p-dropdown
-          [options]="statusOptions"
-          [(ngModel)]="editedTrip!.status"
-          name="status"
-          placeholder="Selecione o Status"
-          class="w-full rounded-lg"
-          required
-        ></p-dropdown>
-      </div>
+        <!-- PASSO 5: RESUMO -->
+        <div *ngSwitchCase="4">
+            <p-panel header="Revisão Final">
+                <p-card header="Detalhes da Viagem" styleClass="p-mb-3">
+                    <p><strong>Nome:</strong> {{ tripData.nome }}</p>
+                    <p><strong>Destino:</strong> {{ tripData.destino }}</p>
+                    <p><strong>Período:</strong> {{ tripData.dataInicio | date:'dd/MM/yyyy' }} a {{ tripData.dataFim | date:'dd/MM/yyyy' }}</p>
+                    <p><strong>Status:</strong> {{ tripData.status }}</p>
+                </p-card>
+                 <p-card header="Roteiro de Atividades" styleClass="p-mb-3">
+                    <ul>
+                        <li *ngFor="let act of tripData.atividades">
+                            {{ act.nome }} - <span class="text-gray-600">{{ act.dataHora ? (act.dataHora | date:'dd/MM/yyyy HH:mm') : 'Não agendado' }}</span>
+                        </li>
+                    </ul>
+                </p-card>
+                <p-card header="Resumo Financeiro">
+                    <ul>
+                        <li *ngFor="let gasto of tripData.gastos" class="p-d-flex p-jc-between">
+                            <span>{{ gasto.nome }}</span>
+                            <span class="font-bold">{{ gasto.valor | currency:'BRL' }}</span>
+                        </li>
+                    </ul>
+                    <hr class="p-my-2">
+                    <div class="p-d-flex p-jc-between font-bold text-lg">
+                       <span>Total</span>
+                       <span>{{ getTotalExpenses() | currency:'BRL' }}</span>
+                    </div>
+                </p-card>
+            </p-panel>
+        </div>
+    </ng-container>
+</div>
 
-      <div class="flex flex-col">
-        <label class="text-sm font-medium text-gray-700 mb-1"
-          >Orçamento (R$)</label
-        >
-        <p-inputNumber
-          [(ngModel)]="editedTrip!.totalGastos"
-          name="budget"
-          mode="currency"
-          currency="BRL"
-          locale="pt-BR"
-          [minFractionDigits]="2"
-          [maxFractionDigits]="2"
-          class="w-full rounded-lg"
-          required
-        ></p-inputNumber>
-      </div>
-    </div>
-
-    <aside class="flex justify-end space-x-3 mt-6">
-      <p-button
-        label="Cancelar"
-        icon="pi pi-times"
-        styleClass="p-button-outlined p-button-rounded text-sm"
-        (click)="cancelEdit()"
-      ></p-button>
-      <p-button
-        label="Salvar"
-        icon="pi pi-check"
-        styleClass="p-button-primary p-button-rounded text-sm"
-        type="submit"
-      ></p-button>
-    </aside>
-  </form>
+<!-- Rodapé com botões de navegação -->
+<div class="p-dialog-footer p-4 flex justify-content-end gap-2 border-top-1 border-gray-200">
+    <p-button label="Voltar" icon="pi pi-arrow-left" (click)="prevStep()" [disabled]="activeIndex === 0" styleClass="p-button-secondary"></p-button>
+    <p-button *ngIf="activeIndex < 4" label="Próximo" icon="pi pi-arrow-right" iconPos="right" (click)="nextStep()"></p-button>
+    <p-button *ngIf="activeIndex === 4" label="Salvar Alterações" icon="pi pi-check" (click)="saveChanges()" styleClass="p-button-success"></p-button>
 </div>

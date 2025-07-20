@@ -15,12 +15,17 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { firebaseEnv } from '../environments/environment.development';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 
+import { DialogService } from 'primeng/dynamicdialog';
+import { MessageService } from 'primeng/api';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
     provideHttpClient(withFetch()),
+    DialogService,
+    MessageService,
     provideFirebaseApp(() => initializeApp(firebaseEnv.firebase)),
     { provide: FIREBASE_OPTIONS, useValue: firebaseEnv.firebase },
     provideAuth(() => getAuth()),
