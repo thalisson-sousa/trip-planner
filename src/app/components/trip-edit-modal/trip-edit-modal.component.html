@@ -156,32 +156,38 @@
         <!-- PASSO 5: RESUMO -->
         <div *ngSwitchCase="4">
             <p-panel header="Revisão Final">
-                <p-card header="Detalhes da Viagem" styleClass="p-mb-3">
+              <div class="summary-container">
+                <p-card header="Detalhes da Viagem">
+                  <div class="summary-details">
                     <p><strong>Nome:</strong> {{ tripData.nome }}</p>
                     <p><strong>Destino:</strong> {{ tripData.destino }}</p>
-                    <p><strong>Período:</strong> {{ tripData.dataInicio | date:'dd/MM/yyyy' }} a {{ tripData.dataFim | date:'dd/MM/yyyy' }}</p>
-                    <p><strong>Status:</strong> {{ tripData.status }}</p>
+                    <p><strong>Inicio:</strong> {{ tripData.dataInicio | date:'dd/MM/yyyy' }}</p>
+                    <p><strong>Fim:</strong> {{ tripData.dataFim | date:'dd/MM/yyyy' }}</p>
+                    <p><strong>Status:</strong> <span> {{ tripData.status }} </span></p>
+                    <p><strong>Criador: </strong> {{ tripData.nomeCriador }}</p>
+                  </div>
                 </p-card>
-                 <p-card header="Roteiro de Atividades" styleClass="p-mb-3">
-                    <ul>
-                        <li *ngFor="let act of tripData.atividades">
-                            {{ act.nome }} - <span class="text-gray-600">{{ act.dataHora ? (act.dataHora | date:'dd/MM/yyyy HH:mm') : 'Não agendado' }}</span>
+                 <p-card header="Roteiro de Atividades">
+                    <ul class="activity-list">
+                        <li class="activity-item" *ngFor="let act of tripData.atividades">
+                            {{ act.nome }} <span class="text-gray-600">{{ act.dataHora ? (act.dataHora | date:'dd/MM/yyyy HH:mm') : 'Não agendado' }}</span>
                         </li>
                     </ul>
                 </p-card>
                 <p-card header="Resumo Financeiro">
-                    <ul>
-                        <li *ngFor="let gasto of tripData.gastos" class="p-d-flex p-jc-between">
+                    <ul class="activity-list">
+                        <li *ngFor="let gasto of tripData.gastos" class="activity-item">
                             <span>{{ gasto.nome }}</span>
                             <span class="font-bold">{{ gasto.valor | currency:'BRL' }}</span>
                         </li>
                     </ul>
                     <hr class="p-my-2">
-                    <div class="p-d-flex p-jc-between font-bold text-lg">
+                    <div class="totalSpendend">
                        <span>Total</span>
                        <span>{{ getTotalExpenses() | currency:'BRL' }}</span>
                     </div>
                 </p-card>
+              </div>
             </p-panel>
         </div>
     </ng-container>
