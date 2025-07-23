@@ -1,6 +1,13 @@
 <!-- Toast para exibir notificações -->
 <p-toast></p-toast>
 
+  <div class="flex justify-end pt-6">
+    <p-button label="Fechar" icon="pi pi-times" styleClass="p-button-rounded p-button-secondary text-sm" (click)="CloseModal()"></p-button>
+  </div>
+
+<!-- Espaçamento entre os elementos -->
+<div style="margin-top: 1rem;"></div>
+
 <!-- Indicador de Passos -->
 <p-steps [model]="steps" [(activeIndex)]="activeIndex" [readonly]="false"></p-steps>
 
@@ -10,6 +17,7 @@
 <!-- Conteúdo dos Passos -->
 <div *ngIf="tripData">
     <ng-container [ngSwitch]="activeIndex">
+
 
         <!-- PASSO 1: INFORMAÇÕES GERAIS -->
         <div *ngSwitchCase="0">
@@ -141,6 +149,7 @@
                       </div>
                       <div>
                         <span class="font-bold">{{ gasto.valor | currency:'BRL' }}</span>
+                        <p-button icon="pi pi-pencil" styleClass="p-button-text" (click)="editExpense(gasto)"></p-button>
                         <p-button icon="pi pi-trash" styleClass="p-button-danger p-button-text" (click)="removeExpense(gasto.id)"></p-button>
                       </div>
                     </li>
@@ -199,3 +208,31 @@
     <p-button *ngIf="activeIndex < 4" label="Próximo" icon="pi pi-arrow-right" iconPos="right" (click)="nextStep()"></p-button>
     <p-button *ngIf="activeIndex === 4" label="Salvar Alterações" icon="pi pi-check" (click)="saveChanges()" styleClass="p-button-success"></p-button>
 </div>
+
+<p-dialog header="Agendar Horario da Atividade" [(visible)]="timeModal" [modal]="true" [style]="{ width: '30vw' }" [closable]="false">
+    <div>
+      <p>Atividade agendada! Qual horário? (HH:MM)"</p>
+      <input type="time" [formControl]="scheduledTime" class="p-inputtext p-component">
+
+      <div class="p-dialog-footer p-4 flex justify-content-end gap-2 border-top-1 border-gray-200">
+          <p-button label="Cancelar" icon="pi pi-times" (click)="timeModal = false" styleClass="p-button-secondary"></p-button>
+          <p-button label="Salvar" icon="pi pi-check" (click)="saveScheduledTime()" styleClass="p-button-success"></p-button>
+      </div>
+    </div>
+</p-dialog>
+
+<p-dialog header="Editar Gasto" [(visible)]="gastoEditModal" [modal]="true" [style]="{ width: '30vw' }" [closable]="false">
+    <div class="p-4">
+      <p>Editar Gasto</p>
+      <div class="p-inputgroup mb-3">
+        <input placeholder="Nome do Gasto" [(ngModel)]="editedExpense.nome" disabled="true">
+      </div>
+      <div class="p-inputgroup mb-3">
+        <input type="number" [(ngModel)]="editedExpense.valor" placeholder="Valor (R$)" mode="currency" currency="BRL" locale="pt-BR">
+      </div>
+      <div class="p-dialog-footer p-4 flex justify-content-end gap-2 border-top-1 border-gray-200">
+          <p-button label="Cancelar" icon="pi pi-times" (click)="gastoEditModal = false" styleClass="p-button-secondary"></p-button>
+          <p-button label="Salvar" icon="pi pi-check" (click)="saveExpense()" styleClass="p-button-success"></p-button>
+      </div>
+    </div>
+</p-dialog>

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MenuItem, MessageService } from 'primeng/api';
+import { ReactiveFormsModule } from '@angular/forms';
 
 // Importações do PrimeNG para o componente Standalone
 import { StepsModule } from 'primeng/steps';
@@ -16,6 +17,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { DataViewModule } from 'primeng/dataview';
 import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
+import { Dialog } from 'primeng/dialog';
 
 // Interface para os dados da viagem (boa prática)
 interface Atividade {
@@ -68,12 +70,21 @@ interface TripData {
     PanelModule,
     DataViewModule,
     CardModule,
-    ToastModule
+    ToastModule,
+    Dialog,
+    ReactiveFormsModule
   ],
   providers: [MessageService]
 })
 export class TripEditModalComponent implements OnInit {
+
   tripData!: TripData;
+
+  timeModal: boolean = false;
+  gastoEditModal: boolean = false;
+  scheduledTime = new FormControl('');
+  scheduledDay: Date | null = null;
+  scheduledActivity: Atividade | null = null;
 
   steps: MenuItem[] = [
     { label: 'Info. Gerais' },
@@ -93,6 +104,7 @@ export class TripEditModalComponent implements OnInit {
 
   newParticipantName: string = '';
   newExpense = { nome: '', valor: null as number | null };
+  editedExpense = { nome: '', valor: null as number | null };
 
   calendarDays: Date[] = [];
   weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
@@ -116,6 +128,10 @@ export class TripEditModalComponent implements OnInit {
     if (this.activeIndex < this.steps.length - 1) {
       this.activeIndex++;
     }
+  }
+
+  CloseModal() {
+    this.ref.close();
   }
 
   prevStep() {
@@ -165,21 +181,11 @@ export class TripEditModalComponent implements OnInit {
 
   drop(day: Date) {
     if (this.draggedActivity) {
-      const time = prompt("Atividade agendada! Qual horário? (HH:MM)", "09:00");
-      if (time && /^\d{2}:\d{2}$/.test(time)) {
-        const [hours, minutes] = time.split(':');
-        const newDate = new Date(day);
-        newDate.setHours(parseInt(hours, 10));
-        newDate.setMinutes(parseInt(minutes, 10));
-        const activityIndex = this.tripData.atividades.findIndex(a => a.id === this.draggedActivity!.id);
-        if(activityIndex !== -1) {
-            this.tripData.atividades[activityIndex].dataHora = newDate.toISOString();
-        }
-        this.messageService.add({ severity: 'info', summary: 'Agendado', detail: `${this.draggedActivity.nome} agendado para ${time}.` });
-        this.draggedActivity = null;
-      } else {
-        this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Formato de hora inválido.' });
-      }
+      this.scheduledDay = day;
+      this.scheduledActivity = this.draggedActivity;
+      this.scheduledTime.setValue(''); // Limpa o campo de horário
+      this.timeModal = true; // Abre o modal
+      this.draggedActivity = null; // Limpa o drag
     }
   }
 
@@ -216,4 +222,53 @@ export class TripEditModalComponent implements OnInit {
     console.log('Dados da viagem salvos:', this.tripData);
     this.ref.close(this.tripData); // Fecha o modal e retorna os dados
   }
+
+  saveScheduledTime() {
+    if (this.scheduledDay && this.scheduledActivity) {
+      const time = this.scheduledTime.value;
+      if (time && /^\d{2}:\d{2}$/.test(time)) {
+        const [hours, minutes] = time.split(':');
+        const newDate = new Date(this.scheduledDay);
+        newDate.setHours(parseInt(hours, 10));
+        newDate.setMinutes(parseInt(minutes, 10));
+        // Atualiza a atividade
+        const activityIndex = this.tripData.atividades.findIndex(a => a.id === this.scheduledActivity!.id);
+        if (activityIndex !== -1) {
+          this.tripData.atividades[activityIndex].dataHora = newDate.toISOString();
+        }
+        this.messageService.add({ severity: 'info', summary: 'Agendado', detail: `${this.scheduledActivity.nome} agendado para ${time}.` });
+        this.timeModal = false;
+        this.scheduledDay = null;
+        this.scheduledActivity = null;
+        this.scheduledTime.setValue('');
+      } else {
+        this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Formato de hora inválido.' });
+      }
+    }
+  }
+
+  editExpense(gasto: Gasto) {
+    this.gastoEditModal = true;
+    this.editedExpense.nome = gasto.nome;
+    this.editedExpense.valor = gasto.valor;
+    // Aqui você pode adicionar lógica para editar o gasto, como abrir um modal com os detalhes
+  }
+
+  saveExpense() {
+    if (this.editedExpense.nome && this.editedExpense.valor && this.editedExpense.valor > 0) {
+      const gastoIndex = this.tripData.gastos.findIndex(g => g.nome === this.editedExpense.nome);
+      if (gastoIndex !== -1) {
+        this.tripData.gastos[gastoIndex].nome = this.editedExpense.nome;
+        this.tripData.gastos[gastoIndex].valor = this.editedExpense.valor;
+        this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Gasto editado!' });
+        this.gastoEditModal = false;
+        this.editedExpense = { nome: '', valor: null };
+      } else {
+        this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Gasto não encontrado.' });
+      }
+    } else {
+      this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Preencha todos os campos corretamente.' });
+    }
+  }
 }
+
