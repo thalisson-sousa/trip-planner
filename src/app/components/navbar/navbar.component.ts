@@ -7,16 +7,19 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
 import { MenuItem } from 'primeng/api';
 import { SpeedDial } from 'primeng/speeddial';
 
+import { Chip } from 'primeng/chip';
+
 @Component({
   selector: 'app-navbar',
-  imports: [AvatarModule, AvatarGroupModule, RouterLink, SpeedDial],
+  imports: [AvatarModule, AvatarGroupModule, RouterLink, SpeedDial, Chip],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
   items: MenuItem[] = [];
 
- imageUrl: string = 'https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png';
+  imageUrl: string = 'https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png';
+  userName: string = '';
 
  constructor(private route: Router) {
 
@@ -25,7 +28,9 @@ export class NavbarComponent {
   ngOnInit() {
     if (typeof window !== 'undefined') {
       const photo = localStorage.getItem('userPhoto');
+      const name = localStorage.getItem('userName');
       if (photo) this.imageUrl = photo;
+      if (name) this.userName = name;
     }
 
     if (typeof window !== 'undefined' && localStorage.getItem('token')) {

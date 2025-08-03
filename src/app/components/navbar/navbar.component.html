@@ -16,9 +16,11 @@
     </ul>
   </div>
   <div style="display: flex; gap: 0.5rem; align-items: center; justify-content: center;">
-    <div>
-      <p-avatar class="avatar" [image]="imageUrl" class="mr-2" size="large" shape="circle" loading="lazy" />
+
+    <div class="card flex items-center gap-2 flex-wrap">
+      <p-chip [label]="userName" [image]="imageUrl" alt="Avatar image" />
     </div>
+
     <div style="height: 40px; position: relative;">
       <p-speeddial [model]="items" direction="down"/>
     </div>
