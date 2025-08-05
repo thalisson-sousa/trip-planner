@@ -91,9 +91,9 @@ export class TravelsComponent {
   showTripDetails(trip: Trip) {
     this.ref = this.dialogService.open(TripDetailModalComponent, {
       header: 'Detalhes da Viagem',
-      width: '50vw',
+      width: '80vw',
       modal: true,
-      data: { trip: trip },
+      data: { trip: { ...trip } },
       styleClass: 'custom-modal-dialog'
     });
   }

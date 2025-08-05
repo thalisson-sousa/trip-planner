@@ -1,48 +1,213 @@
-<div class="p-6 rounded-3xl bg-white shadow-5 w-full max-w-3xl mx-auto">
-  <div class="flex flex-col items-center text-center mb-6">
-    <img [src]="trip?.imageUrl" [alt]="trip?.nome"
-         class="w-full max-h-64 object-cover rounded-2xl mb-4"
-         (error)="trip!.imageUrl = 'https://placehold.co/600x300/E5E7EB/4B5563?text=Imagem+Indisponível'" />
-
-    <h2 class="text-3xl font-semibold text-gray-900">{{ trip?.nome }}</h2>
-    <p-chip [label]="trip?.status" [ngClass]="getStatusSeverity(trip?.status || '')" class="mt-2"></p-chip>
-  </div>
-
-  <div class="containerInfos">
-    <div class="infos">
-      <div class="flex items-center text-gray-800 gap-2">
-        <i class="pi pi-map-marker text-gray-500"></i>
-        <label class="destino-label">Destino</label>
-      </div>
-      <span>{{ trip?.destino }}</span>
-    </div>
-
-    <div class="infos">
-      <div class="flex items-center text-gray-800 gap-2">
-        <i class="pi pi-calendar text-gray-500"></i>
-        <label class="destino-label">Período</label>
-      </div>
-      <span>{{ trip?.dataInicio | date:'dd/MM/yyyy' }} a {{ trip?.dataFim | date:'dd/MM/yyyy' }}</span>
-    </div>
-
-    <div class="infos">
-      <div class="flex items-center text-gray-800 gap-2">
-        <i class="pi pi-wallet text-gray-500"></i>
-        <label class="destino-label">Orçamento</label>
-      </div>
-      <span>R$ {{ trip?.totalGastos | number:'1.2-2' }}</span>
-    </div>
-
-    <div class="infos">
-      <div class="flex items-center text-gray-800 gap-2">
-        <i class="pi pi-hashtag text-gray-500"></i>
-        <label class="destino-label">ID da Viagem</label>
-      </div>
-      <span>{{ trip?.id }}</span>
-    </div>
-  </div>
-
   <div class="flex justify-end pt-6">
     <p-button label="Fechar" icon="pi pi-times" styleClass="p-button-rounded p-button-secondary text-sm" (click)="closeModal()"></p-button>
   </div>
+
+<!-- Espaçamento entre os elementos -->
+<div style="margin-top: 1rem;"></div>
+
+<!-- Indicador de Passos -->
+<p-steps [model]="steps" [(activeIndex)]="activeIndex" [readonly]="false"></p-steps>
+
+<!-- Espaçamento entre os elementos -->
+<div style="margin-top: 2rem;"></div>
+
+<!-- Conteúdo dos Passos -->
+<div *ngIf="tripData">
+    <ng-container [ngSwitch]="activeIndex">
+
+      <!-- <div class="mb-4 text-center">
+        <img [src]="tripData.imageUrl" alt="Imagem da viagem" style="width: 100%; max-height: 200px; object-fit: cover;" />
+      </div> -->
+      <h2 class="mt-3 text-center">{{ tripData.nome }}</h2>
+
+        <!-- PASSO 1: INFORMAÇÕES GERAIS -->
+        <div *ngSwitchCase="0">
+            <p-panel header="Informações Gerais">
+              <aside class="cards">
+
+                <div class="mb-4 p-8">
+                  <p-card header="📌 Destino">
+                    <p class="m-0">
+                      <b> {{ tripData.destino }} </b>
+                    </p>
+                  </p-card>
+                </div>
+
+                <div class="mb-4 p-8">
+                  <p-card header="🗓️ Período">
+                    <p class="m-0">
+                     <b> {{ tripData.dataInicio | date:'dd/MM/yyyy' }} </b>
+                      <span class="text-gray-600"> até </span>
+                      <b> {{ tripData.dataFim | date:'dd/MM/yyyy' }} </b>
+                    </p>
+                  </p-card>
+                </div>
+
+                <div class="mb-4 p-8">
+                  <p-card header="📄 Status">
+                    <p class="m-0">
+                       <b> {{ tripData.status }} </b>
+                    </p>
+                  </p-card>
+                </div>
+
+                <div class="mb-4 p-8">
+                  <p-card header="👤 Criador">
+                    <p class="m-0">
+                      <b> {{ tripData.nomeCriador }} </b>
+                    </p>
+                  </p-card>
+                </div>
+
+                <div class="mb-4 p-8">
+                  <p-card header="⚖️ Total de Gastos">
+                    <p class="m-0">
+                      <b> {{ tripData.totalGastos | currency:'BRL' }} </b>
+                    </p>
+                  </p-card>
+                </div>
+              </aside>
+            </p-panel>
+              <!-- Espaçamento entre os elementos -->
+              <div style="margin-top: 1rem;"></div>
+        </div>
+
+        <!-- PASSO 2: PARTICIPANTES -->
+        <div *ngSwitchCase="1">
+            <p-panel class="cards" header="Gerenciar Participantes">
+
+                <div class="participantCard">
+                    <div class="participant-list">
+                        <div class="participant-item creator">
+                            <span>{{ tripData.nomeCriador }} (Criador)</span>
+                            <small>Não pode ser removido</small>
+                        </div>
+                        <div *ngFor="let p of tripData.participantes" class="participant-item">
+                            <span>{{ p.nome }}</span>
+                        </div>
+                        <div *ngIf="!tripData.participantes || tripData.participantes.length === 0" class="text-center p-3">
+                            Nenhum participante convidado ainda.
+                        </div>
+                    </div>
+                </div>
+            </p-panel>
+              <!-- Espaçamento entre os elementos -->
+              <div style="margin-top: 1rem;"></div>
+        </div>
+
+        <!-- PASSO 3: ATIVIDADES -->
+        <div *ngSwitchCase="2">
+          <p-panel header="Atividades">
+            <div *ngIf="(tripData?.atividades?.length || 0) > 0; else semAtividades">
+              <ul class="p-0">
+                <li *ngFor="let atividade of tripData.atividades">
+                  <div class="cards">
+                    <p-card header="{{ atividade.nome }}" [style]="{ 'width': '95%', 'cursor': 'pointer', 'background-color': '#EEF6FF', 'border': '1px solid #B0C4DE', 'color': '#1D40AF' }">
+                      <p>
+                         <span *ngIf="atividade.dataHora" class="text-gray-600"> - {{ atividade.dataHora | date:'dd/MM/yyyy HH:mm' }}</span>
+                        {{ atividade.valor | currency:'BRL' }}
+                      </p>
+                    </p-card>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <ng-template #semAtividades>
+              <p>Nenhuma atividade registrada.</p>
+            </ng-template>
+            <!-- Calendario de viasualização das datas agendadas -->
+
+                                <div class="p-col-12 p-lg-8">
+                        <div class="calendar-grid">
+                            <div *ngFor="let day of weekDays" class="calendar-header">{{ day }}</div>
+                        </div>
+                        <div class="calendar-grid">
+                            <div *ngFor="let i of [].constructor(calendarDays[0]?.getDay() || 0)"></div>
+                            <div *ngFor="let day of calendarDays"
+                                 class="calendar-day"
+                                 pDroppable="activities"
+                                 (onDrop)="drop(day)">
+                                <span class="day-number">{{ day.getDate() }}</span>
+                                <div class="activities-in-day">
+                                    <div *ngFor="let act of getActivitiesForDay(day)" class="day-activity">
+                                        {{ act.nome }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+          </p-panel>
+        </div>
+
+        <!-- PASSO 4: GASTOS -->
+          <div *ngSwitchCase="3">
+             <p-panel header="Controle de Gastos">
+
+              <div class="card">
+                <div class="totalSpendend">
+                    <span class="text-xl font-bold">Total Previsto: {{ totalGastos | currency:'BRL' }}</span>
+                </div>
+                <hr class="p-my-2">
+                <p-table
+                    [value]="tripData.gastos"
+                    [tableStyle]="{ 'min-width': '50rem' }">
+                        <ng-template #header>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Pago por</th>
+                                <th>Valor</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template #body let-gasto>
+                            <tr>
+                                <td>{{ gasto.nome }}</td>
+                                <td>{{ gasto.nomePagador }}</td>
+                                <td>{{ gasto.valor | currency:'BRL' }}</td>
+                            </tr>
+                        </ng-template>
+                </p-table>
+              </div>
+             </p-panel>
+          </div>
+
+        <!-- PASSO 5: RESUMO -->
+          <div *ngSwitchCase="4">
+                      <p-panel header="Revisão Final">
+              <div class="summary-container">
+                <p-card header="Detalhes da Viagem">
+                  <div class="summary-details">
+                    <p><strong>Nome:</strong> {{ tripData.nome }}</p>
+                    <p><strong>Destino:</strong> {{ tripData.destino }}</p>
+                    <p><strong>Inicio:</strong> {{ tripData.dataInicio | date:'dd/MM/yyyy' }}</p>
+                    <p><strong>Fim:</strong> {{ tripData.dataFim | date:'dd/MM/yyyy' }}</p>
+                    <p><strong>Status:</strong> <span> {{ tripData.status }} </span></p>
+                    <p><strong>Criador: </strong> {{ tripData.nomeCriador }}</p>
+                  </div>
+                </p-card>
+                 <p-card header="Roteiro de Atividades">
+                    <ul class="activity-list">
+                        <li class="activity-item" *ngFor="let act of tripData.atividades">
+                            {{ act.nome }} <span class="text-gray-600">{{ act.dataHora ? (act.dataHora | date:'dd/MM/yyyy HH:mm') : 'Não agendado' }}</span>
+                        </li>
+                    </ul>
+                </p-card>
+                <p-card header="Resumo Financeiro">
+                    <ul class="activity-list">
+                        <li *ngFor="let gasto of tripData.gastos" class="activity-item">
+                            <span>{{ gasto.nome }}</span>
+                            <span class="font-bold">{{ gasto.valor | currency:'BRL' }}</span>
+                        </li>
+                    </ul>
+                    <hr class="p-my-2">
+                    <div class="totalSpendend">
+                       <span>Total</span>
+                       <span>{{ totalGastos | currency:'BRL' }}</span>
+                    </div>
+                </p-card>
+              </div>
+            </p-panel>
+        </div>
+    </ng-container>
 </div>
+
