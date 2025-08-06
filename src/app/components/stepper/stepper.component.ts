@@ -1,5 +1,5 @@
 import { TravelService } from './../../services/travel.service';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 
 import { ButtonModule } from 'primeng/button';
 import { StepperModule } from 'primeng/stepper';
@@ -18,12 +18,14 @@ import { FluidModule } from 'primeng/fluid';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { OrderListModule } from 'primeng/orderlist';
-import { Image } from 'primeng/image';
 import { ScrollerModule } from 'primeng/scroller';
 import { AccordionModule } from 'primeng/accordion';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { Dialog } from 'primeng/dialog';
+import { CardModule } from 'primeng/card';
+import { PanelModule } from 'primeng/panel';
+import { DropdownModule } from 'primeng/dropdown';
 
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
@@ -45,7 +47,6 @@ import { Router } from '@angular/router';
     InputGroupModule,
     InputGroupAddonModule,
     ReactiveFormsModule,
-    Image,
     FormsModule,
     OrderListModule,
     ScrollerModule,
@@ -56,12 +57,16 @@ import { Router } from '@angular/router';
     ToastModule,
     ConfirmPopupModule,
     CommonModule,
+    CardModule,
+    PanelModule,
+    DropdownModule,
   ],
   templateUrl: './stepper.component.html',
   styleUrl: './stepper.component.scss',
   providers: [ConfirmationService, MessageService],
 })
 export class StepperComponent {
+
   private formBuilder = inject(FormBuilder);
   visible: boolean = false;
   editedAttraction: Attraction = {
@@ -79,9 +84,19 @@ export class StepperComponent {
   editedId: string | null = null;
   editedIndex: number = -1;
 
+  userName: string | null = localStorage.getItem('userName') || 'Usuário Desconhecido';
+
   attractionInput = new FormControl('');
   GastoNome = new FormControl('');
   GastoPreco = new FormControl<number | null>(null);
+
+  // statusOptions to p-dropdown
+  statusOptions = [
+    { label: 'Em Planejamento', value: 'Em Planejamento' },
+    { label: 'Em Andamento', value: 'Em Andamento' },
+    { label: 'Concluída', value: 'Concluída' },
+    { label: 'Cancelada', value: 'Cancelada' },
+  ];
 
   // Gere um id único (simples)
   private generateId(): number {

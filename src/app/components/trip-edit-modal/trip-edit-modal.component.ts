@@ -97,9 +97,9 @@ export class TripEditModalComponent implements OnInit {
 
   statusOptions = [
     { label: 'Em Planejamento', value: 'Em Planejamento' },
-    { label: 'Confirmada', value: 'Confirmada' },
     { label: 'Em Andamento', value: 'Em Andamento' },
-    { label: 'Finalizada', value: 'Finalizada' }
+    { label: 'Concluída', value: 'Concluída' },
+    { label: 'Cancelada', value: 'Cancelada' },
   ];
 
   newParticipantName: string = '';
