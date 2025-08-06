@@ -15,11 +15,6 @@
 <div *ngIf="tripData">
     <ng-container [ngSwitch]="activeIndex">
 
-      <!-- <div class="mb-4 text-center">
-        <img [src]="tripData.imageUrl" alt="Imagem da viagem" style="width: 100%; max-height: 200px; object-fit: cover;" />
-      </div> -->
-      <h2 class="mt-3 text-center">{{ tripData.nome }}</h2>
-
         <!-- PASSO 1: INFORMAÇÕES GERAIS -->
         <div *ngSwitchCase="0">
             <p-panel header="Informações Gerais">
@@ -173,7 +168,7 @@
 
         <!-- PASSO 5: RESUMO -->
           <div *ngSwitchCase="4">
-            <p-panel header="Revisão Final">
+            <p-panel>
               <div class="summary-container">
                 <p-card header="Detalhes da Viagem">
                   <div class="summary-details">
@@ -188,7 +183,11 @@
                  <p-card header="Roteiro de Atividades">
                     <ul class="activity-list">
                         <li class="activity-item" *ngFor="let act of tripData.atividades">
-                            {{ act.nome }} <span class="text-gray-600">{{ act.dataHora ? (act.dataHora | date:'dd/MM/yyyy HH:mm') : 'Não agendado' }}</span>
+                            <span>{{ act.nome }}</span>
+                            <div class="activity-details">
+                              <span class="font-bold">{{ act.valor | currency:'BRL' }}</span>
+                              <span class="text-gray-600">{{ act.dataHora ? (act.dataHora | date:'dd/MM/yyyy HH:mm') : 'Não agendado' }}</span>
+                            </div>
                         </li>
                     </ul>
                 </p-card>
@@ -202,7 +201,7 @@
                     <hr class="p-my-2">
                     <div class="totalSpendend">
                        <span>Total</span>
-                       <span>{{ totalGastos | currency:'BRL' }}</span>
+                       <span>{{ tripData.totalGastos| currency:'BRL' }}</span>
                     </div>
                 </p-card>
               </div>
