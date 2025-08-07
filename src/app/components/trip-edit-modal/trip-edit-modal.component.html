@@ -116,7 +116,11 @@
                                 <span class="day-number">{{ day.getDate() }}</span>
                                 <div class="activities-in-day">
                                     <div *ngFor="let act of getActivitiesForDay(day)" class="day-activity">
-                                        {{ act.nome }}
+                                      <span>
+                                        <p> {{ act.nome }}</p>
+                                        <p *ngIf="act.dataHora" class="text-gray-600">Horario: {{ act.dataHora | date:'HH:mm' }}</p>
+                                        <p>Valor: {{ act.valor | currency:'BRL' }}</p>
+                                      </span>
                                     </div>
                                 </div>
                             </div>

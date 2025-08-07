@@ -18,39 +18,10 @@ import { DataViewModule } from 'primeng/dataview';
 import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
 import { Dialog } from 'primeng/dialog';
+import { TravelService } from '../../services/travel.service';
+import { Atividade, Gasto, TripData } from '../../types/TripData';
 
 // Interface para os dados da viagem (boa prática)
-interface Atividade {
-  id: number;
-  viagemId: number;
-  nome: string;
-  descricao: string | null;
-  valor: number;
-  dataHora: string | null;
-  status: string | null;
-}
-
-interface Gasto {
-    id: number;
-    viagemId: number;
-    nome: string;
-    valor: number;
-    nomePagador: string;
-    participantes: any[];
-}
-
-interface TripData {
-    id: number;
-    nome: string;
-    destino: string;
-    dataInicio: string;
-    dataFim: string;
-    status: string;
-    nomeCriador: string;
-    participantes: { nome: string }[];
-    atividades: Atividade[];
-    gastos: Gasto[];
-}
 
 @Component({
   selector: 'app-trip-edit-modal',
@@ -113,14 +84,23 @@ export class TripEditModalComponent implements OnInit {
   constructor(
     private messageService: MessageService,
     public config: DynamicDialogConfig,
-    public ref: DynamicDialogRef
+    public ref: DynamicDialogRef,
+    private travelService: TravelService,
   ) {}
 
   ngOnInit() {
     // Recebe os dados passados pelo DialogService e cria uma cópia profunda
     if (this.config.data && this.config.data.trip) {
       this.tripData = JSON.parse(JSON.stringify(this.config.data.trip));
+      this.tripData.criador = localStorage.getItem('userId') ? { id: parseInt(localStorage.getItem('userId')!), nomeCriador: localStorage.getItem('userName') || '' } : { id: 0, nomeCriador: '' };
+
+      // atualizar a propriedade viagem de cada atividade colocando o id da viagem com o valor do tripData.id
+      this.tripData.atividades.forEach(atividade => {
+        atividade.viagem = { id: this.tripData.id };
+      });
+
     }
+
     this.generateCalendar();
   }
 
@@ -218,9 +198,21 @@ export class TripEditModalComponent implements OnInit {
   }
 
   saveChanges() {
-    this.messageService.add({ severity: 'success', summary: 'Salvo!', detail: 'As informações da viagem foram salvas.' });
-    console.log('Dados da viagem salvos:', this.tripData);
-    this.ref.close(this.tripData); // Fecha o modal e retorna os dados
+
+    // Aqui você pode fazer uma requisição HTTP para atualizar os dados no servidor, se necessário
+    // Exemplo:
+    this.travelService.putTravels(this.tripData).subscribe({
+      next: (updatedTrip) => {
+        this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Viagem atualizada com sucesso!' });
+        console.log('Viagem atualizada:', this.tripData);
+        this.ref.close(updatedTrip); // Fecha o modal e retorna a viagem atualizada
+      }
+      ,
+      error: (error) => {
+        console.log('Viagem atualizada:', this.tripData);
+        this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao atualizar a viagem.' });
+      }
+    });
   }
 
   saveScheduledTime() {

@@ -45,4 +45,13 @@ export class TravelService {
     );
   }
 
+  putTravels(travel: any): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.AuthToken}`,
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.put<any>(`${this.apiUrl}/${travel.id}`, travel, { headers });
+  }
+
 }
