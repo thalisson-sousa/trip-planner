@@ -121,6 +121,7 @@
                                         <p *ngIf="act.dataHora" class="text-gray-600">Horario: {{ act.dataHora | date:'HH:mm' }}</p>
                                         <p>Valor: {{ act.valor | currency:'BRL' }}</p>
                                       </span>
+                                      <p-button icon="pi pi-pencil" styleClass="p-button-text" (click)="editActivity(act, day)"></p-button>
                                     </div>
                                 </div>
                             </div>

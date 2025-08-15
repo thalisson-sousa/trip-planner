@@ -14,6 +14,7 @@ import { InputIconModule } from 'primeng/inputicon';
 import { FormControl } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 
+
 @Component({
   selector: 'app-trip-detail-modal',
   templateUrl: './trip-detail-modal.component.html',
@@ -75,22 +76,42 @@ export class TripDetailModalComponent implements OnInit {
   }
 
   drop(day: Date) {
-    if (this.draggedActivity) {
-      this.scheduledDay = day;
-      this.scheduledActivity = this.draggedActivity;
-      this.scheduledTime.setValue(''); // Limpa o campo de horário
-      this.tripData?.atividades.push({
+    if (this.draggedActivity && this.scheduledTime.value) {
+      const newActivity: Atividade = {
         ...this.draggedActivity,
-        dataHora: `${day.toISOString().split('T')[0]}T${this.scheduledTime.value || '00:00:00'}`,
-      });
-      this.draggedActivity = null; // Limpa o drag
+        dataHora: this.scheduledTime.value,
+        viagemId: this.tripData?.id || 0,
+      };
+      this.tripData?.atividades.push(newActivity);
+      this.draggedActivity = null;
+      this.scheduledTime.setValue('');
+      this.scheduledDay = null;
+      this.scheduledActivity = null;
     }
   }
 
   getActivitiesForDay(day: Date): Atividade[] {
     const dayString = day.toISOString().split('T')[0];
-    return this.tripData?.atividades.filter(activity =>
-      activity.dataHora?.startsWith(dayString)) || [];
+    return this.tripData?.atividades?.filter(a => a.dataHora && a.dataHora.startsWith(dayString)) || [];
   }
 
-}
+  //teste
+
+    getUnscheduledActivities(): Atividade[] {
+      return this.tripData?.atividades.filter(activity => !activity.dataHora) || [];
+    }
+
+    dragStart(activity: Atividade) {
+      this.draggedActivity = activity;
+      this.scheduledActivity = activity;
+      this.scheduledDay = null; // Reset scheduled day when starting drag
+      this.scheduledTime.setValue(''); // Reset scheduled time when starting drag
+    }
+
+    dragEnd() {
+      this.draggedActivity = null; // Clear the dragged activity when drag ends
+      this.scheduledActivity = null; // Clear the scheduled activity when drag ends
+      this.scheduledDay = null; // Clear the scheduled day when drag ends
+      this.scheduledTime.setValue(''); // Clear the scheduled time when drag ends
+    }
+  }

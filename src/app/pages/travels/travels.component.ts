@@ -48,6 +48,10 @@ export class TravelsComponent {
   ) {}
 
   ngOnInit() {
+    this.getTravels();
+  }
+
+  getTravels() {
     this.service.getTravels().subscribe((trips: Trip[]) => {
       this.initialTrips$ = trips;
       this.applyFiltersAndSort();

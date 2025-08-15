@@ -20,6 +20,8 @@ import { ToastModule } from 'primeng/toast';
 import { Dialog } from 'primeng/dialog';
 import { TravelService } from '../../services/travel.service';
 import { Atividade, Gasto, TripData } from '../../types/TripData';
+import { routes } from '../../app.routes';
+import { timeout } from 'rxjs';
 
 // Interface para os dados da viagem (boa prática)
 
@@ -202,14 +204,11 @@ export class TripEditModalComponent implements OnInit {
     // Aqui você pode fazer uma requisição HTTP para atualizar os dados no servidor, se necessário
     // Exemplo:
     this.travelService.putTravels(this.tripData).subscribe({
-      next: (updatedTrip) => {
-        this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Viagem atualizada com sucesso!' });
-        console.log('Viagem atualizada:', this.tripData);
-        this.ref.close(updatedTrip); // Fecha o modal e retorna a viagem atualizada
-      }
-      ,
+      next: (response) => {
+        this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Viagem atualizada!' });
+        this.ref.close(this.tripData); // Fecha o modal e retorna os dados atualizados
+      },
       error: (error) => {
-        console.log('Viagem atualizada:', this.tripData);
         this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Erro ao atualizar a viagem.' });
       }
     });
@@ -239,6 +238,13 @@ export class TripEditModalComponent implements OnInit {
     }
   }
 
+  editActivity(activity: Atividade, day: Date) {
+    this.scheduledDay = day;
+    this.scheduledActivity = activity;
+    this.scheduledTime.setValue(activity.dataHora ? activity.dataHora.split('T')[1].substring(0, 5) : ''); // Formata o horário
+    this.timeModal = true; // Abre o modal para edição
+  }
+
   editExpense(gasto: Gasto) {
     this.gastoEditModal = true;
     this.editedExpense.nome = gasto.nome;
@@ -252,9 +258,9 @@ export class TripEditModalComponent implements OnInit {
       if (gastoIndex !== -1) {
         this.tripData.gastos[gastoIndex].nome = this.editedExpense.nome;
         this.tripData.gastos[gastoIndex].valor = this.editedExpense.valor;
-        this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Gasto editado!' });
         this.gastoEditModal = false;
         this.editedExpense = { nome: '', valor: null };
+        this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Gasto editado!' });
       } else {
         this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Gasto não encontrado.' });
       }

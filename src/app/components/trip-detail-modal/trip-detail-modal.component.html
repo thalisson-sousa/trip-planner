@@ -98,10 +98,10 @@
                 <li *ngFor="let atividade of tripData.atividades">
                   <div class="cards">
                     <p-card header="{{ atividade.nome }}" [style]="{ 'width': '95%', 'cursor': 'pointer', 'background-color': '#EEF6FF', 'border': '1px solid #B0C4DE', 'color': '#1D40AF' }">
-                      <p>
-                         <span *ngIf="atividade.dataHora" class="text-gray-600"> - {{ atividade.dataHora | date:'dd/MM/yyyy HH:mm' }}</span>
-                        {{ atividade.valor | currency:'BRL' }}
-                      </p>
+                      <span>
+                         <p *ngIf="atividade.dataHora" class="text-gray-600">Data e Hora: {{ atividade.dataHora | date:'dd/MM/yyyy HH:mm' }}</p>
+                         <p>Valor: {{ atividade.valor | currency:'BRL' }} </p>
+                      </span>
                     </p-card>
                   </div>
                 </li>
@@ -111,8 +111,9 @@
               <p>Nenhuma atividade registrada.</p>
             </ng-template>
             <!-- Calendario de viasualização das datas agendadas -->
-
-                                <div class="p-col-12 p-lg-8">
+            <p-panel header="Planejamento de Atividades">
+                <div class="p-grid">
+                    <div class="p-col-12 p-lg-8">
                         <div class="calendar-grid">
                             <div *ngFor="let day of weekDays" class="calendar-header">{{ day }}</div>
                         </div>
@@ -125,12 +126,18 @@
                                 <span class="day-number">{{ day.getDate() }}</span>
                                 <div class="activities-in-day">
                                     <div *ngFor="let act of getActivitiesForDay(day)" class="day-activity">
-                                        {{ act.nome }}
+                                      <span>
+                                        <p> {{ act.nome }}</p>
+                                        <p *ngIf="act.dataHora" class="text-gray-600">Horario: {{ act.dataHora | date:'HH:mm' }}</p>
+                                        <p>Valor: {{ act.valor | currency:'BRL' }}</p>
+                                      </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </p-panel>
 
           </p-panel>
         </div>
