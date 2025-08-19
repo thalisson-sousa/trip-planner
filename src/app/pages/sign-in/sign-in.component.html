@@ -4,24 +4,24 @@
   </div>
 
   <div class="container">
-    <div class="form">
+    <form class="form" [formGroup]="signInForm" (ngSubmit)="onSubmit()">
       <div class="flex flex-col gap-2">
-        <label for="username">Username</label>
-        <input pInputText id="username" type="text" />
+        <label for="email">Email</label>
+        <input formControlName="email" pInputText id="email" type="text" />
       </div>
       <div class="flex flex-col gap-2">
         <label for="password">Password</label>
-        <input pInputText id="password" type="password" />
+        <input formControlName="senha" pInputText id="password" type="password" />
       </div>
       <div class="flex">
-        <p-button
-          label="Login"
-          icon="pi pi-user"
-          class="w-full max-w-[17.35rem]"
-          styleClass="w-full mx-auto"
-        />
+        <button pButton type="submit" label="Sign In" class="w-full" [disabled]="signInForm.invalid"></button>
       </div>
-    </div>
+      <div>
+        <p class="text-center text-sm">
+          Don't have an account? <a href="/signup">Sign UP</a>
+        </p>
+      </div>
+    </form>
 
     <div class="divider">
       <p-divider layout="vertical" class="!hidden md:!flex"><b>OR</b></p-divider>
