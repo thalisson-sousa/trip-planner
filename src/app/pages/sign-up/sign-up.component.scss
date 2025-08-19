@@ -1,0 +1,115 @@
+// Centraliza o formulário na página
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #0ea5e9;
+
+    .logo {
+    position: sticky;
+    top: 0;
+
+    height: 200px;
+    margin-bottom: 2rem;
+
+    img {
+      width: 200px;
+      height: auto;
+      background-color: #ffffff;
+      border-radius: 100%;
+    }
+  }
+}
+
+// Estiliza o cartão
+.card {
+  display: flex;
+  justify-content: center;
+
+  height: auto;
+  width: 30rem;
+  padding: 1rem;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 1em;
+      width: 100%;
+
+      //separar o label do input
+      div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
+
+        label {
+          font-weight: 600;
+          color: #495057;
+        }
+
+        input {
+          padding: 0.5em;
+          width: 100%;
+          font-size: 1rem;
+        }
+      }
+    }
+  }
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #343a40;
+}
+
+// Estiliza os inputs
+.form-control {
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+  transition: border-color 0.3s;
+}
+
+.form-control:focus {
+  border-color: #80bdff;
+}
+
+// Feedback de erro
+.is-invalid {
+  border-color: #dc3545;
+}
+
+.invalid-feedback {
+  font-size: 0.875rem;
+  color: #dc3545;
+}
+
+// Botão de envio
+.btn-primary {
+  background-color: #0ea5e9;
+  border: none;
+  color: white;
+  padding: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #0ea5e9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

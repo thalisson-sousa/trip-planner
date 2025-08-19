@@ -15,22 +15,16 @@ export class AuthService {
   }
 
   validateToken(): Observable<boolean> {
-    return this.http
-      .get(`${this.apiUrl}`, {
-        headers: {
-          Authorization: `Bearer ${this.getToken()}`,
-        },
-      })
-      .pipe(
-        map(() => {
-          this.isvalid = true;
-          return true;
-        }),
-        catchError((error) => {
-          localStorage.removeItem('token');
-          this.isvalid = false;
-          return of(false);
-        })
-      );
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return of(false);
+    }
+
+    return this.http.get<{ valid: boolean }>(`${this.apiUrl}/validate`, {
+      headers: { Authorization: `Bearer ${token}` }
+    }).pipe(
+      map(res => res.valid),
+      catchError(() => of(false)) // qualquer erro = token inválido
+    );
   }
 }

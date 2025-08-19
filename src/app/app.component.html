@@ -1,5 +1,5 @@
 <section class="app-container">
-  <ng-container *ngIf="!isLoginPage; else loginPage">
+  <ng-container *ngIf="!isLoginPage && !isSignUpPage; else authPages">
     <div class="app-nav">
       <app-navbar></app-navbar>
     </div>
@@ -13,7 +13,13 @@
     </div>
   </ng-container>
 
-  <ng-template #loginPage>
-    <app-sign-in></app-sign-in>
+  <ng-template #authPages>
+    <ng-container *ngIf="isLoginPage">
+      <app-sign-in></app-sign-in>
+    </ng-container>
+    <ng-container *ngIf="isSignUpPage">
+      <app-sign-up></app-sign-up>
+    </ng-container>
   </ng-template>
 </section>
+<p-toast></p-toast>

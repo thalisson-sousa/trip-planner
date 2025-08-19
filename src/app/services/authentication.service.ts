@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { UserResponse } from '../types/userResponse';
+import { User } from '../types/User';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,36 @@ import { UserResponse } from '../types/userResponse';
 export class AuthenticationService {
 
   private readonly apiUrl = `${environment.API}/api/auth`;
+  private AuthToken = localStorage.getItem('token')?.replace('Bearer ', '') || '';
 
   constructor(public auth: AngularFireAuth, private http: HttpClient) { }
+
+    register(user: User): Observable<UserResponse> {
+      const headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      };
+      console.log("chegou aqui")
+      return this.http.post<UserResponse>(`${this.apiUrl}`, user, { headers });
+    }
+
+    socialLogin(user: User): Observable<UserResponse> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    };
+    console.log("chegou aqui")
+    return this.http.post<UserResponse>(`${this.apiUrl}`, user, { headers });
+  }
+
+    login(user: User): Observable<UserResponse> {
+    const headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    };
+    console.log("chegou aqui")
+    return this.http.post<UserResponse>(`${this.apiUrl}/login`, user, { headers });
+  }
 
   async loginWithGoogle() {
     try {

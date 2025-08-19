@@ -29,8 +29,15 @@ export class NavbarComponent {
     if (typeof window !== 'undefined') {
       const photo = localStorage.getItem('userPhoto');
       const name = localStorage.getItem('userName');
-      if (photo) this.imageUrl = photo;
+
       if (name) this.userName = name;
+      if (photo) {
+        if (photo !== 'null') {
+         this.imageUrl = photo;
+      } else {
+         this.imageUrl = 'https://t4.ftcdn.net/jpg/15/73/27/01/360_F_1573270125_F9BUEXWCpDQ09BaMvye6hvmaJp2svEv4.jpg';
+      }
+      }
     }
 
     if (typeof window !== 'undefined' && localStorage.getItem('token')) {

@@ -1,0 +1,81 @@
+<!-- sign-up Page! -->
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+            <div class="logo">
+              <img src="/images/logo.png" alt="logo da pagina de login" />
+            </div>
+          <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="nome" class="form-label">Username</label>
+              <input
+                type="text"
+                id="nome"
+                class="form-control"
+                formControlName="nome"
+                [ngClass]="{ 'is-invalid': submitted && f['nome'].errors }"
+              />
+              <div *ngIf="submitted && f['nome'].errors" class="invalid-feedback">
+                <div *ngIf="f['nome'].errors['required']">Username is required</div>
+                <div *ngIf="f['nome'].errors['minlength']">
+                  Username must be at least 3 characters  long
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                id="email"
+                class="form-control"
+                formControlName="email"
+                [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+              />
+              <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                <div *ngIf="f['email'].errors['required']">Email is required</div>
+                <div *ngIf="f['email'].errors['email']">Email must be a valid email address</div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="senha" class="form-label">Password</label>
+              <input
+                type="senha"
+                id="senha"
+                class="form-control"
+                formControlName="senha"
+                [ngClass]="{ 'is-invalid': submitted && f['senha'].errors }"
+              />
+              <div *ngIf="submitted && f['senha'].errors" class="invalid-feedback">
+                <div *ngIf="f['senha'].errors['required']">Password is required</div>
+                <div *ngIf="f['senha'].errors['minlength']">
+                  Password must be at least 6 characters long
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirm Password</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                class="form-control"
+                formControlName="confirmPassword"
+                [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }"
+              />
+              <div *ngIf="submitted && f['confirmPassword'].errors" class="invalid-feedback">
+                <div *ngIf="f['confirmPassword'].errors['required']">Password is required</div>
+                <div *ngIf="f['confirmPassword'].errors['minlength']">
+                  Password must be at least 6 characters long
+                </div>
+              </div>
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary">Sign Up</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
