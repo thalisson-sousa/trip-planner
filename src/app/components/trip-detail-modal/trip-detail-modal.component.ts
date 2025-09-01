@@ -13,6 +13,8 @@ import { CardModule } from 'primeng/card';
 import { InputIconModule } from 'primeng/inputicon';
 import { FormControl } from '@angular/forms';
 import { TableModule } from 'primeng/table';
+import { CalendarComponent } from "../calendar/calendar.component";
+import { Console } from 'console';
 
 
 @Component({
@@ -20,7 +22,7 @@ import { TableModule } from 'primeng/table';
   templateUrl: './trip-detail-modal.component.html',
   styleUrls: ['./trip-detail-modal.component.scss'],
   standalone: true,
-  imports: [CommonModule, ButtonModule, ChipModule, DialogModule, PanelModule, StepsModule, CalendarModule, CardModule, InputIconModule, TableModule]
+  imports: [CommonModule, ButtonModule, ChipModule, DialogModule, PanelModule, StepsModule, CalendarModule, CardModule, InputIconModule, TableModule, CalendarComponent]
 })
 export class TripDetailModalComponent implements OnInit {
   tripData: Travel | undefined;
@@ -42,6 +44,8 @@ export class TripDetailModalComponent implements OnInit {
   ];
   activeIndex: number = 0;
 
+  passeios: { id: number; nome: string; data: string; horario: string }[] = [];
+
   constructor(
     public config: DynamicDialogConfig,
     public ref: DynamicDialogRef
@@ -51,6 +55,18 @@ export class TripDetailModalComponent implements OnInit {
     // Recebe os dados passados pelo DialogService e cria uma cópia profunda
     if (this.config.data && this.config.data.trip) {
       this.tripData = JSON.parse(JSON.stringify(this.config.data.trip));
+
+      // copiar as atividades para o arrey de passeios
+      this.tripData?.atividades.forEach(atividade => {
+        if (atividade.dataHora) {
+          this.passeios.push({
+            id: atividade.id ?? 0,
+            nome: atividade.nome ?? 'Atividade Sem Nome',
+            data: atividade.dataHora,
+            horario: atividade.dataHora.split('T')[1].substring(0,5) // extrai o horário no formato "HH:MM"
+          });
+        }
+      });
     }
   }
 

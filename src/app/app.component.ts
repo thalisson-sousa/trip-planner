@@ -17,7 +17,7 @@ import { Toast } from "primeng/toast";
     FooterComponent,
     SignInComponent,
     SignUpComponent,
-    Toast
+    Toast,
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'

@@ -110,36 +110,12 @@
             <ng-template #semAtividades>
               <p>Nenhuma atividade registrada.</p>
             </ng-template>
-            <!-- Calendario de viasualização das datas agendadas -->
-            <p-panel header="Planejamento de Atividades">
-                <div class="p-grid">
-                    <div class="p-col-12 p-lg-8">
-                        <div class="calendar-grid">
-                            <div *ngFor="let day of weekDays" class="calendar-header">{{ day }}</div>
-                        </div>
-                        <div class="calendar-grid">
-                            <div *ngFor="let i of [].constructor(calendarDays[0]?.getDay() || 0)"></div>
-                            <div *ngFor="let day of calendarDays"
-                                 class="calendar-day"
-                                 pDroppable="activities"
-                                 (onDrop)="drop(day)">
-                                <span class="day-number">{{ day.getDate() }}</span>
-                                <div class="activities-in-day">
-                                    <div *ngFor="let act of getActivitiesForDay(day)" class="day-activity">
-                                      <span>
-                                        <p> {{ act.nome }}</p>
-                                        <p *ngIf="act.dataHora" class="text-gray-600">Horario: {{ act.dataHora | date:'HH:mm' }}</p>
-                                        <p>Valor: {{ act.valor | currency:'BRL' }}</p>
-                                      </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </p-panel>
-
           </p-panel>
+          <!-- Espaçamento entre os elementos -->
+          <div style="margin-top: 1rem;"></div>
+          <!-- Calendário -->
+          <h3 class="text-lg font-semibold mb-2">Calendário de Atividades</h3>
+            <app-calendar [passeios]="passeios"></app-calendar>
         </div>
 
         <!-- PASSO 4: GASTOS -->
