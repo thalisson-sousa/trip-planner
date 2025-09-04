@@ -5,6 +5,11 @@ import { SignInComponent } from './pages/sign-in/sign-in.component';
 import { authGuard } from './utils/authGuard';
 import { TravelsComponent } from './pages/travels/travels.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
+import { MyprofileComponent } from './pages/myprofile/myprofile.component';
+import { PreferencesComponent } from './components/preferences/preferences.component';
+import { DocumentsComponent } from './components/documents/documents.component';
+import { ConfigsComponent } from './components/configs/configs.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 export const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -12,4 +17,18 @@ export const routes: Routes = [
   {path: 'signup', component: SignUpComponent},
   {path: 'newtrip', component: CreateTripComponent, canActivate: [authGuard]},
   {path: 'travels', component: TravelsComponent , canActivate: [authGuard]},
+  {path: 'myprofile', component: MyprofileComponent},
+
+  // Profile Page Routes
+  {
+  path: 'myprofile',
+  component: MyprofileComponent,
+  children: [
+    { path: 'profile', component: ProfileComponent, outlet: 'secondary' },
+    { path: 'preferences', component: PreferencesComponent, outlet: 'secondary' },
+    { path: 'documents', component: DocumentsComponent, outlet: 'secondary' },
+    { path: 'configs', component: ConfigsComponent, outlet: 'secondary' }
+  ]
+}
+
 ];

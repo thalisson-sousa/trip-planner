@@ -1,0 +1,64 @@
+<section class="container">
+
+   <!-- Header Painel -->
+  <header class="header">
+    <h2>Gerenciar Perfil</h2>
+    <p class="m-0">
+        Configure suas preferências e informações de viagem
+    </p>
+  </header>
+
+  <main class="content">
+
+    <!-- Sidebar content -->
+    <aside class="sidebar">
+      <div class="mb-4 p-8">
+        <p-card>
+          <div class="card-title">
+            <i class="pi pi-user mr-2"></i>
+            <h3>Informações Pessoais</h3>
+          </div>
+          <div class="profileCard">
+            <div>
+              <p-avatar image="{{ imageUrl }}" class="mr-2" size="xlarge" shape="circle" />
+            </div>
+            <span>
+              <h4 class="m-0">{{ userName }}</h4>
+              <p class="m-0">{{ description }}</p>
+            </span>
+          </div>
+        </p-card>
+      </div>
+
+      <div class="mb-4 p-8">
+        <p-card>
+          <div class="card-title">
+            <i class="pi pi-calendar mr-2"></i>
+            <h3>Próximas Viagens</h3>
+          </div>
+        </p-card>
+      </div>
+    </aside>
+
+     <!-- Main content -->
+    <aside class="mainContent">
+      <div class="card">
+        <p-tabs value="/profile">
+        <p-tablist>
+          <p-tab
+            *ngFor="let tab of tabs; trackBy: trackByRoute"
+            [value]="tab.route"
+            [routerLink]="[{ outlets: { secondary: [tab.route] } }]"
+            class="flex items-center !gap-2 text-inherit">
+              <i [class]="tab.icon"></i>
+              <span>{{ tab.label }}</span>
+          </p-tab>
+        </p-tablist>
+      </p-tabs>
+        <div>
+          <router-outlet name="secondary"></router-outlet>
+        </div>
+      </div>
+    </aside>
+  </main>
+</section>
