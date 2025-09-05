@@ -1,1 +1,38 @@
-<p>profile works!</p>
+<section class="container">
+  <header class="header">
+    <h1>Informações Pessoais</h1>
+    <p>Atualize suas informações básicas de perfil</p>
+  </header>
+
+<form [formGroup]="profileForm" class="profile-form">
+  <div class="form-row">
+    <div class="form-group">
+      <label for="name">Nome</label>
+      <input type="text" id="name" formControlName="name" placeholder="Digite seu primeiro nome" />
+    </div>
+    <div class="form-group">
+      <label for="sobrenome">Sobrenome</label>
+      <input type="text" id="sobrenome" formControlName="sobrenome" placeholder="Digite seu Sobrenome" />
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" id="email" formControlName="email" placeholder="Digite seu email" />
+    <span class="validator" *ngIf="profileForm.get('email')?.invalid && profileForm.get('email')?.touched">
+      Email inválido
+    </span>
+  </div>
+  <div class="form-group">
+    <label for="phone">Telefone</label>
+    <input type="tel" id="phone" formControlName="phone" placeholder="Digite seu telefone (99) 99999-9999" (blur)="onPhoneInput($event)" />
+    <span class="validator" *ngIf="profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched">
+      Telefone deve estar no formato (99) 99999-9999
+    </span>
+  </div>
+  <div class="form-group">
+    <label for="bio">Biografia</label>
+    <textarea id="bio" formControlName="bio" placeholder="Conte-nos sobre você"></textarea>
+  </div>
+  <button type="submit" class="btn-save">Salvar Alterações</button>
+</form>
+</section>

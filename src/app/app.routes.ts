@@ -17,17 +17,17 @@ export const routes: Routes = [
   {path: 'signup', component: SignUpComponent},
   {path: 'newtrip', component: CreateTripComponent, canActivate: [authGuard]},
   {path: 'travels', component: TravelsComponent , canActivate: [authGuard]},
-  {path: 'myprofile', component: MyprofileComponent},
+  {path: 'myprofile', component: MyprofileComponent, canActivate: [authGuard]},
 
   // Profile Page Routes
   {
   path: 'myprofile',
   component: MyprofileComponent,
   children: [
-    { path: 'profile', component: ProfileComponent, outlet: 'secondary' },
-    { path: 'preferences', component: PreferencesComponent, outlet: 'secondary' },
-    { path: 'documents', component: DocumentsComponent, outlet: 'secondary' },
-    { path: 'configs', component: ConfigsComponent, outlet: 'secondary' }
+    { path: 'profile', component: ProfileComponent, outlet: 'secondary', canActivate: [authGuard]},
+    { path: 'preferences', component: PreferencesComponent, outlet: 'secondary', canActivate: [authGuard] },
+    { path: 'documents', component: DocumentsComponent, outlet: 'secondary', canActivate: [authGuard] },
+    { path: 'configs', component: ConfigsComponent, outlet: 'secondary', canActivate: [authGuard] }
   ]
 }
 

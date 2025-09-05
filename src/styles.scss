@@ -3,6 +3,19 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --primary-color: #3BB5EE; /* Indigo-600 */
+  --primary-color-hover: #4338CA; /* Indigo-700 */
+  --secondary-color: #6B7280; /* Gray-500 */
+  --secondary-color-hover: #4B5563; /* Gray-600 */
+  --background-color: #F9FAFB; /* Gray-50 */
+  --text-primary-color: #fff; /* Gray-900 */
+  --text-secondary-color: #111827; /* Gray-900 */
+  --border-color: #E5E7EB; /* Gray-200 */
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --error-color: #EF4444; /* Red-500 */
+}
+
 /* You can add global styles to this file, and also import other style files */
 body, p {
 	margin: 0;

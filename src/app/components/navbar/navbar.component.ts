@@ -46,7 +46,7 @@ export class NavbarComponent {
                 label: 'Profile',
                 icon: 'pi pi-user',
                 command: () => {
-                    this.route.navigate(['/profile']);
+                    this.route.navigate(['/myprofile']);
                 }
             },
             {

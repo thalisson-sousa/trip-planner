@@ -14,17 +14,35 @@
     <aside class="sidebar">
       <div class="mb-4 p-8">
         <p-card>
-          <div class="card-title">
-            <i class="pi pi-user mr-2"></i>
-            <h3>Informações Pessoais</h3>
-          </div>
-          <div class="profileCard">
-            <div>
-              <p-avatar image="{{ imageUrl }}" class="mr-2" size="xlarge" shape="circle" />
+          <ng-template #header>
+            <div class="informationCard">
+              <div class="card-title">
+                <i class="pi pi-user mr-2"></i>
+                <h3>Informações Pessoais</h3>
+              </div>
+              <div class="profileCard">
+                <div>
+                  <p-avatar image="{{ imageUrl }}" class="mr-2" size="xlarge" shape="circle" />
+                </div>
+                <span>
+                  <p style="font-size: 24px; font-weight: 600;" class="m-0">{{ userName }}</p>
+                  <p  style="font-size: 14px;" class="m-0">Explorador(a) de destinos incríveis</p>
+                </span>
+              </div>
             </div>
+          </ng-template>
+          <div class="detailsCard">
             <span>
-              <h4 class="m-0">{{ userName }}</h4>
-              <p class="m-0">{{ description }}</p>
+              <i class="pi pi-flag"></i>
+              <p>3 países visitados</p>
+            </span>
+            <span>
+              <i class="pi pi-calendar"></i>
+              <p>Viajante desde 2019</p>
+            </span>
+            <span>
+              <i class="pi pi-star"></i>
+              <p>Nível Premium</p>
             </span>
           </div>
         </p-card>

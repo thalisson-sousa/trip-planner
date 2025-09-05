@@ -18,7 +18,6 @@ export class MyprofileComponent {
 
   imageUrl: string = localStorage.getItem('userPhoto') ?? 'https://primefaces.org/cdn/primeng/images/demo/avatar/onyamalimba.png';
   userName: string = localStorage.getItem('userName') ?? 'Mario';
-  description: string = localStorage.getItem('userDescription') ?? 'Just a regular guy who loves adventures and exploring new places.';
 
   tabs = [
     { route: 'profile', label: 'Perfil', icon: 'pi pi-user' },
