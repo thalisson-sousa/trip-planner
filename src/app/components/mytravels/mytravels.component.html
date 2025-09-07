@@ -1,0 +1,17 @@
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Minhas Viagens</h2>
+  <div class="row justify-content-center">
+    <div *ngFor="let trip of trips" class="col-md-6 mb-4">
+      <div class="card p-3 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-primary">{{ trip.nome }}</h5>
+          <p class="card-text"><strong>Destino:</strong> {{ trip.destino }}</p>
+          <p class="card-text"><strong>Data de Início:</strong> {{ trip.dataInicio | date:'dd/MM/yyyy' }}</p>
+          <p class="card-text"><strong>Data de Fim:</strong> {{ trip.dataFim | date:'dd/MM/yyyy' }}</p>
+          <p class="card-text"><strong>Status:</strong> <span class="badge bg-success">{{ trip.status }}</span></p>
+          <p class="card-text"><strong>Total de Gastos:</strong> R$ {{ trip.totalGastos }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,84 @@
+.container {
+  margin-top: 2rem;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #0ea5e9;
+  margin-bottom: 2rem;
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #0ea5e9;
+  margin-bottom: 1rem;
+}
+
+.card-text {
+  font-size: 1rem;
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+.badge {
+  font-size: 0.9rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 5px;
+}
+
+.badge.bg-success {
+  background-color: #28a745;
+  color: #ffffff;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.col-md-6 {
+  flex: 1 1 calc(50% - 1rem); /* Define 50% de largura com espaçamento */
+  max-width: calc(50% - 1rem);
+}
+
+@media (max-width: 768px) {
+  .col-md-6 {
+    flex: 1 1 100%; /* Em telas menores, ocupa 100% */
+    max-width: 100%;
+  }
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card-body .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-body .row p {
+  margin: 0;
+  flex: 1;
+  text-align: center;
+}

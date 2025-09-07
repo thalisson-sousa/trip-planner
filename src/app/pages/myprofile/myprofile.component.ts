@@ -21,7 +21,7 @@ export class MyprofileComponent {
 
   tabs = [
     { route: 'profile', label: 'Perfil', icon: 'pi pi-user' },
-    { route: 'preferences', label: 'Preferências', icon: 'pi pi-heart' },
+    { route: 'mytravels', label: 'Minhas Viagens', icon: 'pi pi-map' },
     { route: 'documents', label: 'Documentos', icon: 'pi pi-file' },
     { route: 'configs', label: 'Configurações', icon: 'pi pi-cog' }
   ];
