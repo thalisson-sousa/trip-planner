@@ -4,15 +4,15 @@
     <p>Atualize suas informações básicas de perfil</p>
   </header>
 
-<form [formGroup]="profileForm" class="profile-form">
+<form [formGroup]="profileForm" class="profile-form" (submit)="submit()">
   <div class="form-row">
     <div class="form-group">
       <label for="name">Nome</label>
-      <input type="text" id="name" formControlName="name" placeholder="Digite seu primeiro nome" />
+      <input type="text" id="name" formControlName="firstName" placeholder="Digite seu primeiro nome" />
     </div>
     <div class="form-group">
       <label for="sobrenome">Sobrenome</label>
-      <input type="text" id="sobrenome" formControlName="sobrenome" placeholder="Digite seu Sobrenome" />
+      <input type="text" id="sobrenome" formControlName="lastName" placeholder="Digite seu Sobrenome" />
     </div>
   </div>
   <div class="form-group">
@@ -24,8 +24,8 @@
   </div>
   <div class="form-group">
     <label for="phone">Telefone</label>
-    <input type="tel" id="phone" formControlName="phone" placeholder="Digite seu telefone (99) 99999-9999" (blur)="onPhoneInput($event)" />
-    <span class="validator" *ngIf="profileForm.get('phone')?.invalid && profileForm.get('phone')?.touched">
+    <input type="tel" id="phone" formControlName="telefone" placeholder="Digite seu telefone (99) 99999-9999" (blur)="onPhoneInput($event)" />
+    <span class="validator" *ngIf="profileForm.get('telefone')?.invalid && profileForm.get('telefone')?.touched">
       Telefone deve estar no formato (99) 99999-9999
     </span>
   </div>

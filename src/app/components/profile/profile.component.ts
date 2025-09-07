@@ -2,6 +2,13 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+type Profile = {
+  nome: string;
+  email: string;
+  telefone: string;
+  bio: string;
+}
+
 @Component({
   selector: 'app-profile',
   imports: [ReactiveFormsModule, FormsModule, CommonModule],
@@ -11,16 +18,19 @@ import { CommonModule } from '@angular/common';
 export class ProfileComponent {
 
   profileForm: FormGroup = new FormGroup({
-    name: new FormControl(''),
-    sobrenome: new FormControl(''),
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    nome: new FormControl(''),
     email: new FormControl('', [
       Validators.email
     ]),
-    phone: new FormControl('', [
+    telefone: new FormControl('', [
       Validators.pattern(/^\(\d{2}\) \d{5}-\d{4}$/)
     ]),
     bio: new FormControl('')
   });
+
+  constructor() { }
 
   onPhoneInput(event: any) {
     let input = event.target.value.replace(/\D/g, '');
@@ -35,9 +45,23 @@ export class ProfileComponent {
     } else if (input.length > 0) {
       formatted = `(${input}`;
     }
-    this.profileForm.get('phone')?.setValue(formatted, { emitEvent: false });
+    this.profileForm.get('telefone')?.setValue(formatted, { emitEvent: false });
   }
 
-  constructor() { }
+  submit() {
+    if (this.profileForm.valid) {
+      this.profileForm.get('nome')?.setValue(`${this.profileForm.value.firstName} ${this.profileForm.value.lastName}`);
 
+      const profile: Profile = {
+        nome: this.profileForm.value.nome,
+        email: this.profileForm.value.email,
+        telefone: this.profileForm.value.telefone,
+        bio: this.profileForm.value.bio
+      }
+
+      console.log(profile);
+    } else {
+      console.log('Formulário inválido');
+    }
+  }
 }
